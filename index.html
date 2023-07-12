@@ -13,102 +13,86 @@
     />
   </head>
   <body>
-    <h1>Ficha de Personagem</h1>
+    <h1 class="mainTitle mb-3 mt-3">Ficha de Personagem</h1>
 
-    <div class="row col-6 mb-3 mt-5">
-      <!--primeira coluna-->
+    <div class="row">
+      <div class="col lCol">
+        <h2>Características</h2>
+      </div>
       <div class="col">
-        <h2>Caracteristicas</h2>
+        <label for="totalPoints">Pontos</label>
+        <input id="totalPoints" />
+      </div>
+    </div>
+    <!--* Primeira coluna-->
+    <div class="row">
+      <div class="col lCol">
+        <label for="strenghtAtri">Força:</label>
+        <input type="number" id="strenghtAtri" />
+        <br />
+        <label for="abilityAtri">Habilidade</label>
+        <input type="number" id="abilityAtri" />
+        <br />
+        <label for="resistanceAtri">Resistência:</label>
+        <input type="number" id="resistanceAtri" value="0" />
+        <button onclick="ResPointSetter()">Set</button>
+        <br />
+        <label for="armorAtri">Armadura:</label>
+        <input type="number" id="armorAtri" />
+        <br />
+        <label for="rangedAtri">Poder de Fogo:</label>
+        <input type="number" id="rangedAtri" />
+      </div>
 
-        <div>
-          <label for="forca" class="form-label">Força:</label>
-          <input type="number" class="col-sm-1 col-form-control" id="forca" />
-        </div>
-        <div>
-          <label for="habilidade" class="form-label">Habilidade:</label>
-          <input
-            type="number"
-            class="col-sm-1 col-form-control"
-            id="habilidade"
-          />
-        </div>
-        <div>
-          <label for="resistencia" class="form-label">Resistência:</label>
-          <input
-            type="number"
-            class="col-sm-1 col-form-control"
-            id="resistencia"
-          />
-        </div>
-        <div>
-          <label for="armadura" class="form-label">Armadura:</label>
-          <input
-            type="number"
-            class="col-sm-1 col-form-control"
-            id="armadura"
-          />
-        </div>
-        <div>
-          <label for="pdf" class="form-label">Poder de Fogo:</label>
-          <input type="number" class="col-sm-1 col-form-control" id="pdf" />
-        </div>
-        <div>
-          <label for="pvs" class="form-label mt-4">Pontos de Vida:</label>
-          <input type="number" class="col-sm-1 col-form-control" id="pvs" />
-          <input type="number" class="col-sm-1 col-form-control" id="pvsmax" />
-        </div>
-        <div>
-          <label for="pms" class="form-label">Pontos de Magia:</label>
-          <input type="number" class="col-sm-1 col-form-control" id="pms" />
-          <input type="number" class="col-sm-1 col-form-control" id="pmsmax" />
-        </div>
+      <div class="col lCol">
+        <label for="strenghtType">Força:</label>
+        <input id="strenghtType" />
+        <br />
+        <label for="strenghtType">Poder de Fogo:</label>
+        <input id="strenghtType" />
+        <br />
+        <h2 class="mt-3">Magias Conhecidas</h2>
+      </div>
+    </div>
+    <!--*fim da primeira coluna-->
+    <!--*inicio da segunda coluna-->
+    <div class="row">
+      <div class="col mt-3 lCol">
+        <label for="lifeP">Pontos de Vida:</label>
+        <input type="number" id="lifeP" />
+        <input class="maxBar" id="maxLife" disabled />
+        <br />
+        <label for="magicP">Pontos de Magia:</label>
+        <input type="number" id="magicP" />
+        <input class="maxBar" id="maxMagic" disabled />
+
+        <h3 class="mt-3">Vantagem Única</h3>
+        <input placeholder="Humano" />
+
+        <h3 class="mt-3">Kit de Aventureiro</h3>
+        <input placeholder="Guerreiro" />
+      </div>
+      <div class="col">
+        <textarea name="magics" id="magics" cols="30" rows="10"></textarea>
+      </div>
+    </div>
+    <!--*fim da segunda coluna-->
+    <div class="row">
+      <div class="col lCol">
         <h2 class="mt-3">Vantagens</h2>
-        <div class="mb-3">
-          <textarea class="form-control" id="vantagens" rows="5"></textarea>
-        </div>
-        <h2 class="mt-3">Desvantagens</h2>
-        <div class="mb-3">
-          <textarea class="form-control" id="desvantagens" rows="5"></textarea>
-        </div>
+        <textarea name="skills" id="skills" cols="30" rows="10"></textarea>
       </div>
-
-      <!--primeira coluna-->
-      <div class="col col-6 mb-3 mt-5">
-        <div class="col-order-1 col-6">
-          <label for="pontostotal" class="form-label">Pontos:</label>
-          <input
-            type="number"
-            class="col-sm-2 col-form-control"
-            id="pontostotal"
-          />
-        </div>
-        <h2>Tipos de Dano</h2>
-        <div class="col-order-1 col-6">
-          <label for="tipodano1" class="form-label">Força:</label>
-          <input type="text" class="col-sm-4 col-form-control" id="tipodano1" />
-
-          <label for="tipodano2" class="form-label">PDF:</label>
-          <input type="text" class="col-sm-4 col-form-control" id="tipodano2" />
-        </div>
-
-        <h2>Magias Conhecidas</h2>
-        <div class="col-order-1 col-6">
-          <textarea name="magias" id="magias" cols="15" rows="10"></textarea>
-        </div>
-        <h2>Inventário</h2>
-        <div class="col-order-1 col-6">
-          <textarea name="inv" id="inv" cols="15" rows="10"></textarea>
-        </div>
+      <div class="col">
+        <h2 class="mt-3">Inventário</h2>
+        <textarea
+          name="inventory"
+          id="inventory"
+          cols="30"
+          rows="10"
+        ></textarea>
       </div>
     </div>
-    <!-- fim segunda coluna-->
-    <div>
-      <h2>História</h2>
-      <div>
-        <textarea name="historia" id="historia" cols="30" rows="10"></textarea>
-      </div>
-    </div>
-
+    <script src="script.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
