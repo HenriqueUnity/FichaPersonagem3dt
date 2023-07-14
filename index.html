@@ -69,6 +69,7 @@
 
         <h3 class="mt-3">Vantagem Única</h3>
         <input placeholder="Humano" />
+        <input type="number" />
 
         <h3 class="mt-3">Kit de Aventureiro</h3>
         <input placeholder="Guerreiro" />
@@ -81,7 +82,15 @@
     <div class="row">
       <div class="col lCol">
         <h2 class="mt-3">Vantagens</h2>
-        <textarea name="skills" id="skills" cols="30" rows="10"></textarea>
+        <input type="text" />
+        <input type="number" />
+        <br />
+        <div id="skillSlot0">
+          <!--espaço para novas vantagens-->
+        </div>
+        <button onclick="NewSkill()">+</button>
+
+        <script src="scripts/skills.js"></script>
       </div>
       <div class="col">
         <h2 class="mt-3">Inventário</h2>
