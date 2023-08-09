@@ -1,12 +1,52 @@
 * {
   margin: 0;
+  padding: 0;
 }
-.mainTitle {
+h1 {
   display: flex;
   justify-content: center;
+  margin-top: 1vh;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.atribute {
+  display: flex;
+  margin-left: 1vw;
+  gap: 3px;
+  margin-top: 2vh;
+}
+.atribute input {
+  width: 60px;
+  border-radius: 15px;
+  padding-left: 10px;
 }
 
-.lCol {
-  display: table-column;
-  margin-left: 30px;
+.margin-left {
+  margin-left: 1vw;
+}
+.first-row {
+  display: flex;
+  justify-content: space-between;
+}
+.first-row button {
+  width: 50px;
+}
+.end-col {
+  margin-left: 50vw;
+}
+.bar input {
+  width: 60px;
+  border-radius: 15px;
+  padding-left: 10px;
+}
+.margin-top {
+  margin-top: 2vh;
+}
+.fourth-row {
 }
