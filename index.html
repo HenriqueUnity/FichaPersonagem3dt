@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ficha de personagem</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="lockUnlock.js" defer></script>
-    <script src="script.js" defer></script>
-    <script src="scripts/skills.js" defer></script>
+    <link rel="stylesheet" href="style.css" />   
     
+  <script src="scripts/script.js" defer></script>    
+        
       </head>
   <body>
     <h1>Ficha de Personagem</h1>
@@ -18,7 +17,7 @@
         <h2>Características</h2>
         <button onclick="lockUnlock()">Lock</button>
       </div>
-      <div class="col margin-left">
+      <div class="col margin-left end-col">
         <label for="totalPoints">Pontos</label>
         <input id="totalPoints" />
       </div>
@@ -32,21 +31,27 @@
         <p>Resistência:</p>
         <p>Armadura:</p>
         <p>Poder de Fogo:</p>
+        <button onclick="ResistancePointSetter()">set</button>
       </div>
-      <div class="col atribute">
-        <Input id="strenghtAtri" type="number"></Input>
-        <Input id="abilityAtri" type="number"></Input>
-        <Input id="resistanceAtri" type="number"></Input>
-        <Input id="armorAtri" type="number"></Input>
-        <Input id="rangedAtri" type="number"></Input>
+      <div class="col atribute align-box">
+        <Input class="lock" id="strenghtAtri" type="number"></Input>
+        <Input class="lock" id="abilityAtri" type="number"></Input>
+        <Input class="lock" id="resistanceAtri" type="number"></Input>
+        <Input class="lock" id="armorAtri" type="number"></Input>
+        <Input class="lock" id="rangedAtri" type="number"></Input>
       </div>
            
-      <div class="col end-col">
+      <div class="col margin-left end-col">
         <label for="strenghtType">Força:</label>
         <input id="strenghtType" />
       
         <label for="strenghtType">Poder de Fogo:</label>
         <input id="strenghtType" />
+
+        <div class="col">
+          <h2>Magias Conhecidas</h2>
+
+        </div>
       </div>
      
     </div>
@@ -58,7 +63,7 @@
         <p>Pontos de Vida:</p>         
         <p>Pontos de Magia:</p>            
       </div>
-      <div class="col">
+      <div class="col align-box">
         <div class="bar">
           <input  type="number" id="lifeP" />
           <input class="maxBar" id="maxLife" disabled />
@@ -69,7 +74,7 @@
 
         </div>
         
-      </div>
+      </div>   
       
     </div>
 <!--     
@@ -80,13 +85,13 @@
     <div class="row margin-top margin-left fourth-row">
       <div class="col">
         <h2>Vantagens</h2>
-        <input type="text" />
-        <input type="number" />
+        <input class="skillName" type="text" />
+        <input class="skillValue" type="number" />
         <br />
-        <div id="skillSlot0">
+        <button  onclick="addSkill()">+</button>
+        <div class="skillContainer">
           <!--espaço para novas vantagens-->
         </div>
-        <button onclick="NewSkill()">+</button>
 
         
       </div>
@@ -100,6 +105,7 @@
         ></textarea>
       </div>
     </div>
-  
+
+
   </body>
 </html>
