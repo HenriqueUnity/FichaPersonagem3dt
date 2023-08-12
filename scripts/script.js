@@ -40,20 +40,62 @@ function lockUnlock() {
 
 //skills
 let skills = [];
+let container = document.querySelector(".skillContainer");
 
 function addSkill() {
   let skillName = document.querySelector(".skillName").value;
   let skillValue = document.querySelector(".skillValue").value;
-  let container = document.querySelector(".skillContainer");
   let newskill = {
     name: skillName,
     value: skillValue,
   };
 
   skills.push(newskill);
+  updateSkills();
+}
 
+function updateSkills() {
+  let content = "";
   for (let i = 0; i < skills.length; i++) {
-    container.innerHTML = `<p>${skills[i].name}</p>`;
-    console.log("teste");
+    content += `<p id="${i}">${skills[i].name} (${skills[i].value})</p> 
+    <button onclick="deleteSkills(${i})">x</button>`;
   }
+  container.innerHTML = content;
+  totalPoints();
+}
+
+function deleteSkills(index) {
+  console.log(index);
+
+  skills.splice(index, 1);
+  updateSkills();
+}
+
+function totalPoints() {
+  let total = 0;
+  const pointsDiv = document.querySelector(".totalPoints");
+  for (let i = 0; i < skills.length; i++) {
+    total += parseInt(skills[i].value);
+  }
+  total += parseInt(atributesTotalPoints());
+
+  pointsDiv.innerHTML = `<p>pontos gastos = ${total}</p>`;
+}
+
+function atributesTotalPoints() {
+  // let atr = document.querySelectorAll(".atr");
+  let str = document.querySelector("#strenghtAtri").value;
+  let abi = document.querySelector("#abilityAtri").value;
+  let res = document.querySelector("#resistanceAtri").value;
+  let arm = document.querySelector("#armorAtri").value;
+  let pwr = document.querySelector("#rangedAtri").value;
+
+  let total =
+    parseInt(str) +
+    parseInt(abi) +
+    parseInt(res) +
+    parseInt(arm) +
+    parseInt(pwr);
+
+  return total;
 }
