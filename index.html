@@ -18,8 +18,14 @@
         <button onclick="lockUnlock()">Lock</button>
       </div>
       <div class="col margin-left end-col">
-        <label for="totalPoints">Pontos</label>
-        <input id="totalPoints" />
+        <p>Pontos</p>
+        <select id="maxCharPoints" >
+          <option value="5">Novato: 5</option>
+          <option value="7">Lutador: 7</option>
+          <option value="10">Campeão: 10</option>
+          <option value="12">Lenda: 12</option>
+          <option value="999">NPC</option>
+        </select>
       </div>
     </div>
     <!--* ^^ fim da primeira coluna ^^-->
@@ -104,6 +110,16 @@
           rows="10"
         ></textarea>
       </div>
+    </div>
+    <div class=>
+      <h2>Desvantagens</h2>
+      <input class="badskillName" type="text" />
+        <input class="badskillValue" type="number" />
+        <br />
+        <button  onclick="addSkillNegative()">+</button>
+        <div class="badskillContainer">
+          <!--espaço para novas desvantagens-->
+        </div>
     </div>
     <div class="totalPoints">pontos gastos = 0</div>
 

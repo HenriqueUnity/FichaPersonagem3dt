@@ -41,26 +41,47 @@ function lockUnlock() {
 //skills
 let skills = [];
 let container = document.querySelector(".skillContainer");
-
+let container2 = document.querySelector(".badskillContainer");
+// add vantagens
 function addSkill() {
   let skillName = document.querySelector(".skillName").value;
   let skillValue = document.querySelector(".skillValue").value;
   let newskill = {
     name: skillName,
     value: skillValue,
+    bad: false,
   };
 
+  skills.push(newskill);
+  updateSkills();
+}
+//add desvantages
+function addSkillNegative() {
+  let skillName = document.querySelector(".badskillName").value;
+  let skillValue = document.querySelector(".badskillValue").value;
+  let newskill = {
+    name: skillName,
+    value: skillValue,
+    bad: true,
+  };
   skills.push(newskill);
   updateSkills();
 }
 
 function updateSkills() {
   let content = "";
+  let content2 = "";
   for (let i = 0; i < skills.length; i++) {
-    content += `<p id="${i}">${skills[i].name} (${skills[i].value})</p> 
-    <button onclick="deleteSkills(${i})">x</button>`;
+    if (!skills[i].bad) {
+      content += `<p id="${i}">${skills[i].name} (${skills[i].value})</p> 
+      <button onclick="deleteSkills(${i})">x</button>`;
+    } else {
+      content2 += `<p id="${i}">${skills[i].name} (${skills[i].value})</p> 
+      <button onclick="deleteSkills(${i})">x</button>`;
+    }
   }
   container.innerHTML = content;
+  container2.innerHTML = content2;
   totalPoints();
 }
 
@@ -71,15 +92,21 @@ function deleteSkills(index) {
   updateSkills();
 }
 
+/// contador de pontos totais
+
 function totalPoints() {
   let total = 0;
+  let maxPoints = document.querySelector("#maxCharPoints").value;
   const pointsDiv = document.querySelector(".totalPoints");
   for (let i = 0; i < skills.length; i++) {
     total += parseInt(skills[i].value);
   }
   total += parseInt(atributesTotalPoints());
-
-  pointsDiv.innerHTML = `<p>pontos gastos = ${total}</p>`;
+  if (total > maxPoints) {
+    pointsDiv.innerHTML = `<p class="off-Limits">pontos excedentes = ${
+      maxPoints - total
+    }</p>`;
+  } else pointsDiv.innerHTML = `<p>pontos gastos = ${total}</p>`;
 }
 
 function atributesTotalPoints() {
