@@ -1,15 +1,18 @@
 let lock = false;
 
 //health points mana points multiplier
+const resAtri = document.querySelector("#resistanceAtri");
+resAtri.addEventListener("input", function () {
+  ResistancePointSetter();
+});
 function ResistancePointSetter() {
-  let resAtri = document.getElementById("resistanceAtri");
   let res = resAtri.value;
   SetMaxLifeMagic(res);
 }
 
 function SetMaxLifeMagic(res) {
-  let life = document.getElementById("maxLife");
-  let magic = document.getElementById("maxMagic");
+  const life = document.getElementById("maxLife");
+  const magic = document.getElementById("maxMagic");
   const defaultMultiplier = 5;
   if (res == 0) {
     life.value = 1;
@@ -42,6 +45,10 @@ function lockUnlock() {
 let skills = [];
 let container = document.querySelector(".skillContainer");
 let container2 = document.querySelector(".badskillContainer");
+let badSkillsTotal;
+let maxPoints = document.querySelector("#maxCharPoints").value;
+const pointsDiv = document.querySelector(".totalPoints");
+
 // add vantagens
 function addSkill() {
   let skillName = document.querySelector(".skillName").value;
@@ -66,11 +73,42 @@ function addSkillNegative() {
   };
   skills.push(newskill);
   updateSkills();
+  console.log(badSkillsTotal);
+  negativePointsLimit(badSkillsTotal);
+}
+//limite de desvantagens
+function negativePointsLimit(badTotal) {
+  let maxNegative;
+  maxPoints = document.querySelector("#maxCharPoints").value;
+  switch (parseInt(maxPoints)) {
+    case 5:
+      maxNegative = -3;
+      break;
+    case 7:
+      maxNegative = -4;
+      break;
+    case 10:
+      maxNegative = -5;
+      break;
+    case 12:
+      maxNegative = -6;
+      break;
+    case 999:
+      maxNegative = -999;
+      break;
+    default:
+      console.error("switch error");
+  }
+  console.log(maxNegative);
+  if (badTotal < maxNegative) {
+    pointsDiv.innerHTML = `<p class="off-Limits">Excedeu o número de desvantagens permitidas!</p>`;
+  } else return;
 }
 
 function updateSkills() {
   let content = "";
   let content2 = "";
+  badSkillsTotal = 0;
   for (let i = 0; i < skills.length; i++) {
     if (!skills[i].bad) {
       content += `<p id="${i}">${skills[i].name} (${skills[i].value})</p> 
@@ -78,6 +116,7 @@ function updateSkills() {
     } else {
       content2 += `<p id="${i}">${skills[i].name} (${skills[i].value})</p> 
       <button onclick="deleteSkills(${i})">x</button>`;
+      badSkillsTotal += parseInt(skills[i].value);
     }
   }
   container.innerHTML = content;
@@ -86,8 +125,6 @@ function updateSkills() {
 }
 
 function deleteSkills(index) {
-  console.log(index);
-
   skills.splice(index, 1);
   updateSkills();
 }
@@ -96,17 +133,22 @@ function deleteSkills(index) {
 
 function totalPoints() {
   let total = 0;
-  let maxPoints = document.querySelector("#maxCharPoints").value;
-  const pointsDiv = document.querySelector(".totalPoints");
+  maxPoints = document.querySelector("#maxCharPoints").value;
   for (let i = 0; i < skills.length; i++) {
     total += parseInt(skills[i].value);
   }
   total += parseInt(atributesTotalPoints());
+
   if (total > maxPoints) {
     pointsDiv.innerHTML = `<p class="off-Limits">pontos excedentes = ${
-      maxPoints - total
+      (maxPoints - total) * -1
     }</p>`;
   } else pointsDiv.innerHTML = `<p>pontos gastos = ${total}</p>`;
+
+  if (total === parseInt(maxPoints)) {
+    pointsDiv.innerHTML = `<p>Todos pontos já distribuidos!</p>`;
+    console.log("teste");
+  }
 }
 
 function atributesTotalPoints() {
@@ -126,3 +168,45 @@ function atributesTotalPoints() {
 
   return total;
 }
+
+/// container das magias
+
+let magics = [];
+const magicContainer = document.querySelector(".magicContainer");
+let magicName = document.querySelector(".magicName");
+let magicCost = document.querySelector(".magicCost");
+let magicContent = " ";
+
+function addMagic() {
+  magicContent = " ";
+  magicNameString = magicName.value;
+  magicCostValue = magicCost.value;
+  let newMagic = {
+    name: magicNameString,
+    cost: magicCostValue,
+  };
+  magics.push(newMagic);
+  for (let i = 0; i < magics.length; i++) {
+    magicContent += `<p>${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p>`;
+  }
+  magicContainer.innerHTML = magicContent;
+}
+
+// eventos
+
+// faz o calculo quando cade input tem valor alterado
+const inputsNumber = document.querySelectorAll(".atr");
+
+for (let i = 0; i < inputsNumber.length; i++) {
+  inputsNumber[i].addEventListener("input", function () {
+    totalPoints();
+  });
+}
+
+//evento para calcular pontos assim q seleciona o select
+
+const maxPointsEvent = document.querySelector("#maxCharPoints");
+
+maxPointsEvent.addEventListener("input", function () {
+  totalPoints();
+});

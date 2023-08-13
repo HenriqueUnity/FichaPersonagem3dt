@@ -37,25 +37,59 @@
         <p>Resistência:</p>
         <p>Armadura:</p>
         <p>Poder de Fogo:</p>
-        <button onclick="ResistancePointSetter()">set</button>
+        
       </div>
       <div class="col atribute align-box">
-        <Input class="lock atr" id="strenghtAtri" type="number"></Input>
-        <Input class="lock atr" id="abilityAtri" type="number"></Input>
-        <Input class="lock atr" id="resistanceAtri" type="number"></Input>
-        <Input class="lock atr" id="armorAtri" type="number"></Input>
-        <Input class="lock atr" id="rangedAtri" type="number"></Input>
+        <Input value="0" min="0" class="lock atr" id="strenghtAtri" type="number"></Input>
+        <Input value="0" min="0" class="lock atr" id="abilityAtri" type="number"></Input>
+        <Input value="0" min="0" class="lock atr" id="resistanceAtri" type="number"></Input>
+        <Input value="0" min="0" class="lock atr" id="armorAtri" type="number"></Input>
+        <Input value="0" min="0" class="lock atr" id="rangedAtri" type="number"></Input>
       </div>
            
       <div class="col margin-left end-col">
-        <label for="strenghtType">Força:</label>
-        <input id="strenghtType" />
+        <h2>Tipos de dano</h2>
+        <p>Força:</p>
+        <select>
+          <option value="" disabled selected >Tipo de Dano</option>
+          <option>Corte</option>
+          <option>Perfuração</option>
+          <option>Esmagamento</option>
+          <option>Fogo</option>
+          <option>Frio</option>
+          <option>Elétrico</option>
+          <option>Químico</option>
+          <option>Sônico</option>          
+        </select>
       
-        <label for="strenghtType">Poder de Fogo:</label>
-        <input id="strenghtType" />
+        <p>Poder de Fogo:</p>
+        <select>
+          <option value="" disabled selected >Tipo de Dano</option>
+          <option>Corte</option>
+          <option>Perfuração</option>
+          <option>Esmagamento</option>
+          <option>Fogo</option>
+          <option>Frio</option>
+          <option>Elétrico</option>
+          <option>Químico</option>
+          <option>Sônico</option>          
+        </select>
 
         <div class="col">
           <h2>Magias Conhecidas</h2>
+          <input class="magicName" type="text" />
+        <input class="magicCost" type="number" />
+        <button  onclick="addMagic()">+</button>
+        <select>
+
+        </select>
+
+
+        <div class="magicContainer">
+
+        </div>
+        
+        
 
         </div>
       </div>
@@ -91,8 +125,8 @@
     <div class="row margin-top margin-left fourth-row">
       <div class="col">
         <h2>Vantagens</h2>
-        <input class="skillName" type="text" />
-        <input class="skillValue" type="number" />
+        <input class="skillName" type="text" placeholder="Digite aqui sua nova habilidade!"/>
+        <input class="skillValue" type="number" placeholder="Digite aqui o custo!"/>
         <br />
         <button  onclick="addSkill()">+</button>
         <div class="skillContainer">
@@ -111,7 +145,7 @@
         ></textarea>
       </div>
     </div>
-    <div class=>
+    <div class="margin-left">
       <h2>Desvantagens</h2>
       <input class="badskillName" type="text" />
         <input class="badskillValue" type="number" />
