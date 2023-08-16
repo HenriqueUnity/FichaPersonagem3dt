@@ -50,32 +50,46 @@ let maxPoints = document.querySelector("#maxCharPoints").value;
 const pointsDiv = document.querySelector(".totalPoints");
 
 // add vantagens
+
+const skillName = document.querySelector(".skillName");
+const skillValue = document.querySelector(".skillValue");
+
 function addSkill() {
-  let skillName = document.querySelector(".skillName").value;
-  let skillValue = document.querySelector(".skillValue").value;
+  let nameSkill = skillName.value;
+  let cost = skillValue.value;
   let newskill = {
-    name: skillName,
-    value: skillValue,
+    name: nameSkill,
+    value: cost,
     bad: false,
   };
 
   skills.push(newskill);
   updateSkills();
+
+  skillName.value = "";
+  skillValue.value = "";
 }
 //add desvantages
+const badSkillName = document.querySelector(".badskillName");
+const badSkillValue = document.querySelector(".badskillValue");
+
 function addSkillNegative() {
-  let skillName = document.querySelector(".badskillName").value;
-  let skillValue = document.querySelector(".badskillValue").value;
+  nameSkill = badSkillName.value;
+  cost = badSkillValue.value;
   let newskill = {
-    name: skillName,
-    value: skillValue,
+    name: nameSkill,
+    value: cost,
     bad: true,
   };
   skills.push(newskill);
   updateSkills();
   console.log(badSkillsTotal);
   negativePointsLimit(badSkillsTotal);
+
+  badSkillName.value = "";
+  badSkillValue.value = 0;
 }
+
 //limite de desvantagens
 function negativePointsLimit(badTotal) {
   let maxNegative;
@@ -128,6 +142,29 @@ function deleteSkills(index) {
   skills.splice(index, 1);
   updateSkills();
 }
+///Vantagem unica
+
+const uniqueSkillName = document.querySelector(".uniqueName");
+const uniqueSkillInput = document.querySelector(".uniqueSkillValue");
+const uniqueSkilldiv = document.querySelector(".uniqueSkillContainer");
+const uniqueTotalMod = document.querySelector(".uniqueSkillPoints");
+
+function uniqueSkillValue() {
+  return uniqueTotalMod.value;
+}
+
+function uniqueSkill() {
+  let name = uniqueSkillName.value;
+  let cost = uniqueSkillInput.value;
+  if (!name.value) {
+    console.log(name);
+    name = "Humano";
+  }
+  uniqueSkilldiv.innerHTML = `<p>${name} (${cost})</p>`;
+
+  uniqueSkillName.value = "";
+  uniqueSkillInput.value = 0;
+}
 
 /// contador de pontos totais
 
@@ -137,7 +174,11 @@ function totalPoints() {
   for (let i = 0; i < skills.length; i++) {
     total += parseInt(skills[i].value);
   }
+  let uniqueSkill = uniqueSkillInput.value;
   total += parseInt(atributesTotalPoints());
+  total += parseInt(uniqueSkill);
+
+  total -= parseInt(uniqueSkillValue());
 
   if (total > maxPoints) {
     pointsDiv.innerHTML = `<p class="off-Limits">pontos excedentes = ${
@@ -147,7 +188,6 @@ function totalPoints() {
 
   if (total === parseInt(maxPoints)) {
     pointsDiv.innerHTML = `<p>Todos pontos já distribuidos!</p>`;
-    console.log("teste");
   }
 }
 
@@ -173,8 +213,8 @@ function atributesTotalPoints() {
 
 let magics = [];
 const magicContainer = document.querySelector(".magicContainer");
-let magicName = document.querySelector(".magicName");
-let magicCost = document.querySelector(".magicCost");
+const magicName = document.querySelector(".magicName");
+const magicCost = document.querySelector(".magicCost");
 let magicContent = " ";
 
 function addMagic() {
@@ -190,6 +230,9 @@ function addMagic() {
     magicContent += `<p>${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p>`;
   }
   magicContainer.innerHTML = magicContent;
+
+  magicName.value = " ";
+  magicCost.value = 0;
 }
 
 // eventos
