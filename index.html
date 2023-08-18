@@ -14,7 +14,8 @@
     </div>
     <!--*Primeira coluna-->
     <div class="row">
-    <div>
+      
+    <div >
       <div class="row first-row">
         <div class="col margin-left">
           <h2>Características</h2>
@@ -23,7 +24,7 @@
         
       </div>
       <div class="row">
-        <div class="col atribute">
+        <div class="col atribute margin-left">
           <p>Força:</p>
           <p>Habilidade:</p>
           <p>Resistência:</p>
@@ -31,7 +32,7 @@
           <p>Poder de Fogo:</p>
           
         </div>
-        <div class="col atribute align-box">
+        <div class="col atribute">
           <Input value="0" min="0" class="lock atr" id="strenghtAtri" type="number"></Input>
           <Input value="0" min="0" class="lock atr" id="abilityAtri" type="number"></Input>
           <Input value="0" min="0" class="lock atr" id="resistanceAtri" type="number"></Input>
@@ -40,21 +41,24 @@
         </div>
         </div>
 
-        <div class="row margin-left margin-top col1">
+        <div class="row-start margin-left margin-top col1">
           <div class="col">
-            <p class="forceLine">Pontos de Vida:</p>         
-            <p class="forceLine">Pontos de Magia:</p>            
+            <p class="forceLine max-width">Pontos de Vida:</p>         
+            <p class="forceLine max-width">Pontos de Magia:</p>            
           </div>
           <div class="col align-box">
-            <div class="bar row">
-              <input  type="number" id="lifeP" />
-              <input class="maxBar" id="maxLife" disabled />
+            <div class="row">
+              <input class="inputNumber" type="number" id="lifeP" />
             </div>
-            <div class="bar row">
-              <input  type="number" id="magicP" />
-              <input class="maxBar" id="maxMagic" disabled />
+            <div class="row">
+              <input class="inputNumber" type="number" id="magicP" />
             </div>
-            </div>  
+          </div>  
+          <div class="col">
+            
+            <input class="maxBar inputNumber" id="maxLife" disabled />
+            <input class="maxBar inputNumber" id="maxMagic" disabled />
+            </div>
 
     </div>
 
@@ -82,8 +86,8 @@
       <div class="col">
         <h2>Vantagens</h2>
         <div class="row">
-          <input class="skillName" type="text" placeholder="Nova habilidade"/>
-          <input class="skillValue inputNumber" min="0" type="number" placeholder="Custo"/>
+          <input class="skillName" type="text" placeholder="Nova habilidade">
+          <input class="skillValue inputNumber" min="0" type="number" placeholder="Custo">
           <button onclick="addSkill()">+</button>
         </div>
         <div class="skillContainer">
@@ -96,7 +100,7 @@
 
       <div class="margin-left">
         <h2>Desvantagens</h2>
-        <input class="badskillName" type="text" placeholder="Nova fraqueza" />
+        <input class="badskillName" type="text" placeholder="Nova fraqueza" >
           <input class="badskillValue inputNumber" max="0" type="number" placeholder="Custo"/>
           <button  onclick="addSkillNegative()">+</button>
           <div class="badskillContainer">
@@ -153,8 +157,8 @@
         <div class="col margin-left">
           <h2>Magias Conhecidas</h2>
           <div class="row">
-            <input class="magicName" type="text" />
-            <input class="magicCost inputNumber" min="0" type="number" />
+            <input class="magicName" type="text" >
+            <input class="magicCost inputNumber" min="0" type="number" >
             <button  onclick="addMagic()">+</button>
 
           </div>
@@ -170,17 +174,26 @@
 
         <div class="col margin-left">
           <h2>Inventário</h2>
-          <textarea
-            name="inventory"
-            id="inventory"
-            cols="30"
-            rows="10"
-          ></textarea>      
+        <div class="row">
+          <input type="text" id="itemName">
+          <input type="number" id="itemAmount" class="inputNumber">
+          <button onclick="addItem()">+</button>
+        </div>    
+        <div class="margin-left" id="itemsContainer">
+
+        </div>
+
+        <div>
+          <h2>História</h2>
+          <textarea name="lore" id="lore" cols="30" rows="10"></textarea>
+        </div>
      
     <!--*^^ fim da segunda coluna ^^-->   
       
   </div>
-  <div class="totalPoints">pontos gastos = 0</div>
        </div>
+      </div>
+      <div class="totalPoints">
+        <p>pontos gastos = 0</p></div>
   </body>
 </html>

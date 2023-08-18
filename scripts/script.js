@@ -226,13 +226,57 @@ function addMagic() {
     cost: magicCostValue,
   };
   magics.push(newMagic);
-  for (let i = 0; i < magics.length; i++) {
-    magicContent += `<p>${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p>`;
-  }
-  magicContainer.innerHTML = magicContent;
-
+  updateMagics();
   magicName.value = " ";
   magicCost.value = 0;
+}
+
+function updateMagics() {
+  magicContent = "";
+  if (magics.length > 0) {
+    for (let i = 0; i < magics.length; i++) {
+      magicContent += `<p>${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button onclick="deleteMagic(${i})">-</button>`;
+    }
+  } else {
+    magicContent = " ";
+  }
+  magicContainer.innerHTML = magicContent;
+}
+
+function deleteMagic(index) {
+  magics.splice(index, 1);
+  updateMagics();
+}
+
+// itens
+let items = [];
+let itemsContent = " ";
+const itemName = document.querySelector("#itemName");
+const itemAmount = document.querySelector("#itemAmount");
+const itemsDiv = document.querySelector("#itemsContainer");
+
+function addItem() {
+  let newItem = {
+    name: itemName.value,
+    amount: itemAmount.value,
+  };
+  items.push(newItem);
+  updateItems();
+  itemName.value = "";
+  itemAmount.value = "";
+}
+function updateItems() {
+  console.log("teste");
+  itemsContent = " ";
+  for (let i = 0; i < items.length; i++) {
+    itemsContent += `<div class="row"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})">-</button></div>`;
+  }
+  itemsDiv.innerHTML = itemsContent;
+}
+
+function deleteItem(index) {
+  items.splice(index, 1);
+  updateItems();
 }
 
 // eventos
