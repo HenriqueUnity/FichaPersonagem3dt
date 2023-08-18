@@ -1,113 +1,199 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ficha de personagem</title>
-    <link rel="stylesheet" href="style.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-  </head>
+    <link rel="stylesheet" href="style.css" />   
+    
+  <script src="scripts/script.js" defer></script>        
+      </head>
   <body>
-    <h1 class="mainTitle mb-3 mt-3">Ficha de Personagem</h1>
-
+    <div>
+      <h1>Ficha de Personagem</h1>
+    </div>
+    <!--*Primeira coluna-->
     <div class="row">
-      <div class="col lCol">
-        <h2>Características</h2>
-        <button onclick="LockUnlock()">Lock</button>
+      
+    <div >
+      <div class="row first-row">
+        <div class="col margin-left">
+          <h2>Características</h2>
+          <button onclick="lockUnlock()">Lock</button>
+        </div>
+        
       </div>
+      <div class="row">
+        <div class="col atribute margin-left">
+          <p>Força:</p>
+          <p>Habilidade:</p>
+          <p>Resistência:</p>
+          <p>Armadura:</p>
+          <p>Poder de Fogo:</p>
+          
+        </div>
+        <div class="col atribute">
+          <Input value="0" min="0" class="lock atr" id="strenghtAtri" type="number"></Input>
+          <Input value="0" min="0" class="lock atr" id="abilityAtri" type="number"></Input>
+          <Input value="0" min="0" class="lock atr" id="resistanceAtri" type="number"></Input>
+          <Input value="0" min="0" class="lock atr" id="armorAtri" type="number"></Input>
+          <Input value="0" min="0" class="lock atr" id="rangedAtri" type="number"></Input>
+        </div>
+        </div>
+
+        <div class="row-start margin-left margin-top col1">
+          <div class="col">
+            <p class="forceLine max-width">Pontos de Vida:</p>         
+            <p class="forceLine max-width">Pontos de Magia:</p>            
+          </div>
+          <div class="col align-box">
+            <div class="row">
+              <input class="inputNumber" type="number" id="lifeP" />
+            </div>
+            <div class="row">
+              <input class="inputNumber" type="number" id="magicP" />
+            </div>
+          </div>  
+          <div class="col">
+            
+            <input class="maxBar inputNumber" id="maxLife" disabled />
+            <input class="maxBar inputNumber" id="maxMagic" disabled />
+            </div>
+
+    </div>
+
+    <div class="col margin-left">
+      <div class="row">
+        <h2>Vantagem única</h2>
+      </div>
+      <div class="row">
+        <input type="text" placeholder="Humano" class="uniqueName"/>
+        <input type="number" value="0" class="uniqueSkillValue inputNumber atr"/>
+        <button onclick="uniqueSkill()">+</button>
+      </div>
+      <div class="row">
+        <p>Pontos de Atributos da Vantagem</p>
+        <input type="number" min="0" value="0" class="inputNumber uniqueSkillPoints atr" placeholder="Pts em Características"/>
+
+      </div>
+      <div class="uniqueSkillContainer">
+
+      </div>
+      
+    </div>
+
+    <div class="row margin-top margin-left">
       <div class="col">
-        <label for="totalPoints">Pontos</label>
-        <input id="totalPoints" />
-      </div>
-    </div>
-    <!--* Primeira coluna-->
-    <div class="row">
-      <div class="col lCol">
-        <label for="strenghtAtri">Força:</label>
-        <input class="atribute" type="number" id="strenghtAtri" />
-        <br />
-        <label for="abilityAtri">Habilidade</label>
-        <input class="atribute" type="number" id="abilityAtri" />
-        <br />
-        <label for="resistanceAtri">Resistência:</label>
-        <input class="atribute" type="number" id="resistanceAtri" value="0" />
-        <button onclick="ResPointSetter()">Set</button>
-        <br />
-        <label for="armorAtri">Armadura:</label>
-        <input class="atribute" type="number" id="armorAtri" />
-        <br />
-        <label for="rangedAtri">Poder de Fogo:</label>
-        <input class="atribute" type="number" id="rangedAtri" />
-      </div>
-
-      <div class="col lCol">
-        <label for="strenghtType">Força:</label>
-        <input id="strenghtType" />
-        <br />
-        <label for="strenghtType">Poder de Fogo:</label>
-        <input id="strenghtType" />
-        <br />
-        <h2 class="mt-3">Magias Conhecidas</h2>
-      </div>
-    </div>
-    <!--*fim da primeira coluna-->
-    <!--*inicio da segunda coluna-->
-    <div class="row">
-      <div class="col mt-3 lCol">
-        <label for="lifeP">Pontos de Vida:</label>
-        <input type="number" id="lifeP" />
-        <input class="maxBar" id="maxLife" disabled />
-        <br />
-        <label for="magicP">Pontos de Magia:</label>
-        <input type="number" id="magicP" />
-        <input class="maxBar" id="maxMagic" disabled />
-
-        <h3 class="mt-3">Vantagem Única</h3>
-        <input placeholder="Humano" />
-        <input type="number" />
-
-        <h3 class="mt-3">Kit de Aventureiro</h3>
-        <input placeholder="Guerreiro" />
-      </div>
-      <div class="col">
-        <textarea name="magics" id="magics" cols="30" rows="10"></textarea>
-      </div>
-    </div>
-    <!--*fim da segunda coluna-->
-    <div class="row">
-      <div class="col lCol">
-        <h2 class="mt-3">Vantagens</h2>
-        <input type="text" />
-        <input type="number" />
-        <br />
-        <div id="skillSlot0">
+        <h2>Vantagens</h2>
+        <div class="row">
+          <input class="skillName" type="text" placeholder="Nova habilidade">
+          <input class="skillValue inputNumber" min="0" type="number" placeholder="Custo">
+          <button onclick="addSkill()">+</button>
+        </div>
+        <div class="skillContainer">
           <!--espaço para novas vantagens-->
         </div>
-        <button onclick="NewSkill()">+</button>
 
-        <script src="scripts/skills.js"></script>
       </div>
-      <div class="col">
-        <h2 class="mt-3">Inventário</h2>
-        <textarea
-          name="inventory"
-          id="inventory"
-          cols="30"
-          rows="10"
-        ></textarea>
-      </div>
+        
     </div>
-    <script src="lockUnlock.js"></script>
-    <script src="script.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-      crossorigin="anonymous"
-    ></script>
+
+      <div class="margin-left">
+        <h2>Desvantagens</h2>
+        <input class="badskillName" type="text" placeholder="Nova fraqueza" >
+          <input class="badskillValue inputNumber" max="0" type="number" placeholder="Custo"/>
+          <button  onclick="addSkillNegative()">+</button>
+          <div class="badskillContainer">
+            <!--espaço para novas desvantagens-->
+          </div>
+      </div>
+  </div>
+    <!--* ^^ fim da primeira coluna ^^-->     
+    <!--*Segunda coluna-->
+   
+       <div class="col" id="second-col">
+
+        <div class="col margin-left">
+          <p>Pontos</p>
+          <select id="maxCharPoints" >
+            <option value="5">Novato: 5</option>
+            <option value="7">Lutador: 7</option>
+            <option value="10">Campeão: 10</option>
+            <option value="12">Lenda: 12</option>
+            <option value="999">NPC</option>
+          </select>
+        </div>
+
+        <div class="col margin-left">
+          <h2>Tipos de dano</h2>
+          <p>Força:</p>
+          <select>
+            <option value="" disabled selected >Tipo de Dano</option>
+            <option>Corte</option>
+            <option>Perfuração</option>
+            <option>Esmagamento</option>
+            <option>Fogo</option>
+            <option>Frio</option>
+            <option>Elétrico</option>
+            <option>Químico</option>
+            <option>Sônico</option>          
+          </select>
+        
+          <p>Poder de Fogo:</p>
+          <select>
+            <option value="" disabled selected >Tipo de Dano</option>
+            <option>Corte</option>
+            <option>Perfuração</option>
+            <option>Esmagamento</option>
+            <option>Fogo</option>
+            <option>Frio</option>
+            <option>Elétrico</option>
+            <option>Químico</option>
+            <option>Sônico</option>          
+          </select>
+  
+        </div>
+
+        <div class="col margin-left">
+          <h2>Magias Conhecidas</h2>
+          <div class="row">
+            <input class="magicName" type="text" >
+            <input class="magicCost inputNumber" min="0" type="number" >
+            <button  onclick="addMagic()">+</button>
+
+          </div>
+         
+       
+  
+  
+        <div class="magicContainer">
+  
+        </div>        
+      </div>
+  
+
+        <div class="col margin-left">
+          <h2>Inventário</h2>
+        <div class="row">
+          <input type="text" id="itemName">
+          <input type="number" id="itemAmount" class="inputNumber">
+          <button onclick="addItem()">+</button>
+        </div>    
+        <div class="margin-left" id="itemsContainer">
+
+        </div>
+
+        <div>
+          <h2>História</h2>
+          <textarea name="lore" id="lore" cols="30" rows="10"></textarea>
+        </div>
+     
+    <!--*^^ fim da segunda coluna ^^-->   
+      
+  </div>
+       </div>
+      </div>
+      <div class="totalPoints">
+        <p>pontos gastos = 0</p></div>
   </body>
 </html>
