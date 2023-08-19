@@ -19,6 +19,13 @@ h1 {
   font-size: 48px;
   margin-bottom: 2vh;
 }
+.nameDiv {
+  display: flex;
+  justify-content: center;
+}
+.nameDiv h2 {
+  font-size: 38px;
+}
 .col {
   display: flex;
   flex-direction: column;
@@ -70,11 +77,6 @@ h1 {
 .off-Limits {
   color: red;
 }
-.skillContainer p,
-.badskillContainer p {
-  border-bottom: 1px solid black;
-  width: 30vw;
-}
 .col1 {
   width: 50vw;
 }
@@ -109,4 +111,32 @@ textarea {
 }
 .max-width {
   max-width: 20vh;
+}
+.utility {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hidden {
+  visibility: hidden;
+  position: absolute;
+}
+select,
+option {
+  padding-left: 5px;
+  font-size: medium;
+}
+.defaultMagics button {
+  border-radius: 5px;
+  margin: 1vw;
+  padding: 5px;
+  font-size: 15px;
+}
+.underLine {
+  border-bottom: 1px solid black;
+  width: 30vw;
+}
+.inv {
+  margin-top: 1vh;
+  padding: 5px;
 }

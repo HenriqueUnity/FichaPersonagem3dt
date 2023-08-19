@@ -11,7 +11,16 @@
   <body>
     <div>
       <h1>Ficha de Personagem</h1>
+      <div class="nameDiv"></div>
     </div>
+    <div class="row utility">
+    <button onclick="lockUnlockHidden()">Lock</button>
+  </div>
+  <div class="margin-left row hide">
+      <p>Nome:</p>
+      <input  class="mainName" type="text">
+      <button onclick="setName()">+</button>
+  </div>
     <!--*Primeira coluna-->
     <div class="row">
       
@@ -19,7 +28,6 @@
       <div class="row first-row">
         <div class="col margin-left">
           <h2>Características</h2>
-          <button onclick="lockUnlock()">Lock</button>
         </div>
         
       </div>
@@ -66,12 +74,12 @@
       <div class="row">
         <h2>Vantagem única</h2>
       </div>
-      <div class="row">
+      <div class="row hide">
         <input type="text" placeholder="Humano" class="uniqueName"/>
         <input type="number" value="0" class="uniqueSkillValue inputNumber atr"/>
         <button onclick="uniqueSkill()">+</button>
       </div>
-      <div class="row">
+      <div class="row hide">
         <p>Pontos de Atributos da Vantagem</p>
         <input type="number" min="0" value="0" class="inputNumber uniqueSkillPoints atr" placeholder="Pts em Características"/>
 
@@ -80,12 +88,25 @@
 
       </div>
       
+      
+    </div>
+    <div class="col margin-left">
+     <h2>Kit de Aventureiro</h2>
+     <div class="row hide">
+       <input  class="kitName" type="text" placeholder="Guerreiro, adepto, mago...">
+      
+       <button onclick="addKit()">+</button>
+     </div>
+     <div class="kitContainer">
+
+     </div>
+
     </div>
 
     <div class="row margin-top margin-left">
       <div class="col">
         <h2>Vantagens</h2>
-        <div class="row">
+        <div class="row hide">
           <input class="skillName" type="text" placeholder="Nova habilidade">
           <input class="skillValue inputNumber" min="0" type="number" placeholder="Custo">
           <button onclick="addSkill()">+</button>
@@ -100,9 +121,12 @@
 
       <div class="margin-left">
         <h2>Desvantagens</h2>
-        <input class="badskillName" type="text" placeholder="Nova fraqueza" >
+        <div class="row hide">
+          <input class="badskillName" type="text" placeholder="Nova fraqueza" >
           <input class="badskillValue inputNumber" max="0" type="number" placeholder="Custo"/>
           <button  onclick="addSkillNegative()">+</button>
+
+        </div>
           <div class="badskillContainer">
             <!--espaço para novas desvantagens-->
           </div>
@@ -111,11 +135,11 @@
     <!--* ^^ fim da primeira coluna ^^-->     
     <!--*Segunda coluna-->
    
-       <div class="col" id="second-col">
+       <div class="col" >
 
         <div class="col margin-left">
           <p>Pontos</p>
-          <select id="maxCharPoints" >
+          <select id="maxCharPoints" class="lock">
             <option value="5">Novato: 5</option>
             <option value="7">Lutador: 7</option>
             <option value="10">Campeão: 10</option>
@@ -126,66 +150,70 @@
 
         <div class="col margin-left">
           <h2>Tipos de dano</h2>
-          <p>Força:</p>
-          <select>
-            <option value="" disabled selected >Tipo de Dano</option>
-            <option>Corte</option>
-            <option>Perfuração</option>
-            <option>Esmagamento</option>
-            <option>Fogo</option>
-            <option>Frio</option>
-            <option>Elétrico</option>
-            <option>Químico</option>
-            <option>Sônico</option>          
-          </select>
+          <div class="row">
+            <div class="col">
+              <p>Força:</p>
+              <p>Poder de Fogo:</p>
+            </div>
+            <div class="col margin-left">
+              <select class="lock">
+                <option value="" disabled selected >Tipo de Dano</option>
+                <option>Corte</option>
+                <option>Perfuração</option>
+                <option>Esmagamento</option>
+                <option>Fogo</option>
+                <option>Frio</option>
+                <option>Elétrico</option>
+                <option>Químico</option>
+                <option>Sônico</option>          
+              </select>
+              <select class="lock">
+                <option value="" disabled selected >Tipo de Dano</option>
+                <option>Corte</option>
+                <option>Perfuração</option>
+                <option>Esmagamento</option>
+                <option>Fogo</option>
+                <option>Frio</option>
+                <option>Elétrico</option>
+                <option>Químico</option>
+                <option>Sônico</option>          
+              </select>
+            </div>
+
+          </div>
         
-          <p>Poder de Fogo:</p>
-          <select>
-            <option value="" disabled selected >Tipo de Dano</option>
-            <option>Corte</option>
-            <option>Perfuração</option>
-            <option>Esmagamento</option>
-            <option>Fogo</option>
-            <option>Frio</option>
-            <option>Elétrico</option>
-            <option>Químico</option>
-            <option>Sônico</option>          
-          </select>
   
         </div>
 
         <div class="col margin-left">
           <h2>Magias Conhecidas</h2>
-          <div class="row">
-            <input class="magicName" type="text" >
+          
+          <div class="row hide">
+            <input placeholder="Nova magia" class="magicName" type="text" >
             <input class="magicCost inputNumber" min="0" type="number" >
             <button  onclick="addMagic()">+</button>
-
+          </div>      
+          <div class="row defaultMagics">
+            <button onclick="defaultMagics()">Mostrar magias iniciais</button>
           </div>
-         
-       
-  
-  
-        <div class="magicContainer">
-  
+        <div class="magicContainer">  
         </div>        
-      </div>
-  
+      </div>  
 
         <div class="col margin-left">
           <h2>Inventário</h2>
         <div class="row">
-          <input type="text" id="itemName">
+          <input placeholder="Novo item" type="text" id="itemName">
           <input type="number" id="itemAmount" class="inputNumber">
           <button onclick="addItem()">+</button>
         </div>    
-        <div class="margin-left" id="itemsContainer">
+        <div  class="inv" id="itemsContainer">
 
         </div>
 
         <div>
           <h2>História</h2>
-          <textarea name="lore" id="lore" cols="30" rows="10"></textarea>
+          <textarea placeholder="Era uma vez..." class="lock" name="lore" id="lore" cols="30" rows="10"></textarea>
         </div>
      
     <!--*^^ fim da segunda coluna ^^-->   
@@ -193,7 +221,7 @@
   </div>
        </div>
       </div>
-      <div class="totalPoints">
-        <p>pontos gastos = 0</p></div>
+      <div class="hide totalPoints">
+        <p>Pontos gastos = 0</p></div>
   </body>
 </html>

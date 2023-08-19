@@ -1,0 +1,32 @@
+[
+  {
+    "id": "0",
+    "name": "Ataque Mágico",
+    "cost": "1 a 5 PMs"
+  },
+  {
+    "id": "1",
+    "name": "Cancelar Magia",
+    "cost": "* Consultar manual"
+  },
+  {
+    "id": "2",
+    "name": "Detecção de Magia",
+    "cost": "1PM"
+  },
+  {
+    "id": "3",
+    "name": "Força Mágica",
+    "cost": "2 a 10 PMs"
+  },
+  {
+    "id": "4",
+    "name": "Pequenos Desejos",
+    "cost": "0 PM"
+  },
+  {
+    "id": "5",
+    "name": "Proteção Mágica",
+    "cost": "1 a 5 PMs"
+  }
+]

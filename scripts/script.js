@@ -23,20 +23,34 @@ function SetMaxLifeMagic(res) {
   }
 }
 
+//setar nome
+const mainName = document.querySelector(".mainName");
+const divname = document.querySelector(".nameDiv");
+function setName() {
+  divname.innerHTML = `<h2>${mainName.value}</h2> `;
+}
+
 // lock atributes
 
-function lockUnlock() {
+const atributes = document.getElementsByClassName("lock");
+
+function lockUnlockHidden() {
+  let hide = document.querySelectorAll(".hide");
   if (!lock) {
-    let atributes = document.getElementsByClassName("lock");
-    for (let index = 0; index < atributes.length; index++) {
-      atributes[index].disabled = !event.target.checked;
+    for (let i = 0; i < atributes.length; i++) {
+      atributes[i].disabled = !event.target.checked;
       lock = true;
     }
+    for (let i = 0; i < hide.length; i++) {
+      hide[i].classList.toggle("hidden");
+    }
   } else {
-    let atributes = document.getElementsByClassName("lock");
-    for (let index = 0; index < atributes.length; index++) {
-      atributes[index].disabled = event.target.checked;
+    for (let i = 0; i < atributes.length; i++) {
+      atributes[i].disabled = event.target.checked;
       lock = false;
+    }
+    for (let i = 0; i < hide.length; i++) {
+      hide[i].classList.toggle("hidden");
     }
   }
 }
@@ -125,11 +139,11 @@ function updateSkills() {
   badSkillsTotal = 0;
   for (let i = 0; i < skills.length; i++) {
     if (!skills[i].bad) {
-      content += `<p id="${i}">${skills[i].name} (${skills[i].value})</p> 
-      <button onclick="deleteSkills(${i})">x</button>`;
+      content += `<p class="underLine" id="${i}">${skills[i].name} (${skills[i].value})</p> 
+      <button class="hide" onclick="deleteSkills(${i})">x</button>`;
     } else {
-      content2 += `<p id="${i}">${skills[i].name} (${skills[i].value})</p> 
-      <button onclick="deleteSkills(${i})">x</button>`;
+      content2 += `<p class="underLine" id="${i}">${skills[i].name} (${skills[i].value})</p> 
+      <button class="hide" onclick="deleteSkills(${i})">x</button>`;
       badSkillsTotal += parseInt(skills[i].value);
     }
   }
@@ -156,11 +170,11 @@ function uniqueSkillValue() {
 function uniqueSkill() {
   let name = uniqueSkillName.value;
   let cost = uniqueSkillInput.value;
-  if (!name.value) {
+  if (name.value == "") {
     console.log(name);
     name = "Humano";
   }
-  uniqueSkilldiv.innerHTML = `<p>${name} (${cost})</p>`;
+  uniqueSkilldiv.innerHTML = `<p class="underLine">${name} (${cost})</p>`;
 
   uniqueSkillName.value = "";
   uniqueSkillInput.value = 0;
@@ -181,10 +195,10 @@ function totalPoints() {
   total -= parseInt(uniqueSkillValue());
 
   if (total > maxPoints) {
-    pointsDiv.innerHTML = `<p class="off-Limits">pontos excedentes = ${
+    pointsDiv.innerHTML = `<p class="off-Limits">Pontos excedentes = ${
       (maxPoints - total) * -1
     }</p>`;
-  } else pointsDiv.innerHTML = `<p>pontos gastos = ${total}</p>`;
+  } else pointsDiv.innerHTML = `<p>Pontos gastos = ${total}</p>`;
 
   if (total === parseInt(maxPoints)) {
     pointsDiv.innerHTML = `<p>Todos pontos já distribuidos!</p>`;
@@ -210,12 +224,37 @@ function atributesTotalPoints() {
 }
 
 /// container das magias
-
+let showInitial = false;
 let magics = [];
 const magicContainer = document.querySelector(".magicContainer");
 const magicName = document.querySelector(".magicName");
 const magicCost = document.querySelector(".magicCost");
 let magicContent = " ";
+let initialMagicsContent = "";
+let initialMagics = [];
+
+fetch("json/magics.json")
+  .then((response) => response.json())
+  .then((data) => {
+    for (let i = 0; i < data.length; i++) {
+      initialMagics.push(data[i]);
+    }
+  });
+function defaultMagics() {
+  if (!showInitial) {
+    for (let i = 0; i < initialMagics.length; i++) {
+      initialMagicsContent += `<p class="underLine">${
+        initialMagics[i].name + " / " + initialMagics[i].cost
+      }</p>`;
+    }
+    showInitial = true;
+    updateMagics();
+  } else {
+    initialMagicsContent = "";
+    showInitial = false;
+    updateMagics();
+  }
+}
 
 function addMagic() {
   magicContent = " ";
@@ -235,11 +274,12 @@ function updateMagics() {
   magicContent = "";
   if (magics.length > 0) {
     for (let i = 0; i < magics.length; i++) {
-      magicContent += `<p>${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button onclick="deleteMagic(${i})">-</button>`;
+      magicContent += `<p class="underLine">${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button class="hide" onclick="deleteMagic(${i})">-</button>`;
     }
   } else {
     magicContent = " ";
   }
+  magicContent += initialMagicsContent;
   magicContainer.innerHTML = magicContent;
 }
 
@@ -269,7 +309,7 @@ function updateItems() {
   console.log("teste");
   itemsContent = " ";
   for (let i = 0; i < items.length; i++) {
-    itemsContent += `<div class="row"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})">-</button></div>`;
+    itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})">-</button></div>`;
   }
   itemsDiv.innerHTML = itemsContent;
 }
@@ -278,7 +318,24 @@ function deleteItem(index) {
   items.splice(index, 1);
   updateItems();
 }
+//add kit
+const kitDiv = document.querySelector(".kitContainer");
+const kitName = document.querySelector(".kitName");
+let kitContent = " ";
 
+function addKit() {
+  kitN = kitName.value;
+  kitContent = `<div class="row underLine"><p>${kitN} <p><button  class="hide" onclick="deleteKit()">-</button></div>`;
+  updateKit();
+  kitName.value = " ";
+}
+
+function updateKit() {
+  kitDiv.innerHTML = kitContent;
+}
+function deleteKit() {
+  kitDiv.innerHTML = " ";
+}
 // eventos
 
 // faz o calculo quando cade input tem valor alterado
