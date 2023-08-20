@@ -26,8 +26,15 @@ function SetMaxLifeMagic(res) {
 //setar nome
 const mainName = document.querySelector(".mainName");
 const divname = document.querySelector(".nameDiv");
-function setName() {
+let nameSave;
+function setName(name) {
+  if (name != null) {
+    divname.innerHTML = `<h2>${name}</h2> `;
+    console.log(name);
+    return;
+  }
   divname.innerHTML = `<h2>${mainName.value}</h2> `;
+  nameSave = localStorage.setItem("charName", mainName.value);
 }
 
 // lock atributes
@@ -133,10 +140,14 @@ function negativePointsLimit(badTotal) {
   } else return;
 }
 
-function updateSkills() {
+function updateSkills(skillsLoaded) {
   let content = "";
   let content2 = "";
   badSkillsTotal = 0;
+
+  if (skillsLoaded && skillsLoaded.length > 0) {
+    skills = skillsLoaded;
+  }
   for (let i = 0; i < skills.length; i++) {
     if (!skills[i].bad) {
       content += `<p class="underLine" id="${i}">${skills[i].name} (${skills[i].value})</p> 
@@ -147,6 +158,7 @@ function updateSkills() {
       badSkillsTotal += parseInt(skills[i].value);
     }
   }
+  let skillSave = localStorage.setItem("skills", JSON.stringify(skills));
   container.innerHTML = content;
   container2.innerHTML = content2;
   totalPoints();
@@ -156,7 +168,7 @@ function deleteSkills(index) {
   skills.splice(index, 1);
   updateSkills();
 }
-///Vantagem unica
+///Vantagem unica  Unique Skill  \\\\\\\\\\\\\\\\\
 
 const uniqueSkillName = document.querySelector(".uniqueName");
 const uniqueSkillInput = document.querySelector(".uniqueSkillValue");
@@ -167,14 +179,26 @@ function uniqueSkillValue() {
   return uniqueTotalMod.value;
 }
 
-function uniqueSkill() {
-  let name = uniqueSkillName.value;
-  let cost = uniqueSkillInput.value;
-  if (name.value == "") {
-    console.log(name);
-    name = "Humano";
+function uniqueSkill(uniqueSkillLoaded) {
+  let uniqueObject = {
+    name: "",
+    cost: "",
+  };
+
+  uniqueObject.name = uniqueSkillName.value;
+  uniqueObject.cost = uniqueSkillInput.value;
+  if (uniqueSkillLoaded) {
+    uniqueObject.name = uniqueSkillLoaded.name;
+    uniqueObject.cost = uniqueSkillLoaded.cost;
   }
-  uniqueSkilldiv.innerHTML = `<p class="underLine">${name} (${cost})</p>`;
+  if (uniqueObject.name == "") {
+    uniqueObject.name = "Humano";
+  }
+  let saveUniqueSkill = localStorage.setItem(
+    "uniqueSkill",
+    JSON.stringify(uniqueObject)
+  );
+  uniqueSkilldiv.innerHTML = `<p class="underLine">${uniqueObject.name} (${uniqueObject.cost})</p>`;
 
   uniqueSkillName.value = "";
   uniqueSkillInput.value = 0;
@@ -204,21 +228,39 @@ function totalPoints() {
     pointsDiv.innerHTML = `<p>Todos pontos já distribuidos!</p>`;
   }
 }
+let atrSave;
+const str = document.querySelector("#strenghtAtri");
+const abi = document.querySelector("#abilityAtri");
+const res = document.querySelector("#resistanceAtri");
+const arm = document.querySelector("#armorAtri");
+const pwr = document.querySelector("#rangedAtri");
 
+function atributesLoad() {
+  let atributes = JSON.parse(localStorage.getItem("atributes"));
+
+  str.value = atributes[0];
+  abi.value = atributes[1];
+  res.value = atributes[2];
+  arm.value = atributes[3];
+  pwr.value = atributes[4];
+}
 function atributesTotalPoints() {
-  // let atr = document.querySelectorAll(".atr");
-  let str = document.querySelector("#strenghtAtri").value;
-  let abi = document.querySelector("#abilityAtri").value;
-  let res = document.querySelector("#resistanceAtri").value;
-  let arm = document.querySelector("#armorAtri").value;
-  let pwr = document.querySelector("#rangedAtri").value;
+  let strAtr = str.value;
+  let abiAtr = abi.value;
+  let resAtr = res.value;
+  let armAtr = arm.value;
+  let pwrAtr = pwr.value;
+  let allAtr = [strAtr, abiAtr, resAtr, armAtr, pwrAtr];
+  let allAtrJson = JSON.stringify(allAtr);
+  atrSave = localStorage.setItem("atributes", allAtrJson);
+  console.log(JSON.parse(allAtrJson));
 
   let total =
-    parseInt(str) +
-    parseInt(abi) +
-    parseInt(res) +
-    parseInt(arm) +
-    parseInt(pwr);
+    parseInt(strAtr) +
+    parseInt(abiAtr) +
+    parseInt(resAtr) +
+    parseInt(armAtr) +
+    parseInt(pwrAtr);
 
   return total;
 }
@@ -233,6 +275,7 @@ let magicContent = " ";
 let initialMagicsContent = "";
 let initialMagics = [];
 
+// magias iniciais // default
 fetch("json/magics.json")
   .then((response) => response.json())
   .then((data) => {
@@ -248,11 +291,11 @@ function defaultMagics() {
       }</p>`;
     }
     showInitial = true;
-    updateMagics();
+    updateMagics(null);
   } else {
     initialMagicsContent = "";
     showInitial = false;
-    updateMagics();
+    updateMagics(null);
   }
 }
 
@@ -265,13 +308,20 @@ function addMagic() {
     cost: magicCostValue,
   };
   magics.push(newMagic);
-  updateMagics();
+  updateMagics(null);
   magicName.value = " ";
   magicCost.value = 0;
 }
 
-function updateMagics() {
+function updateMagics(magicsLoad) {
   magicContent = "";
+  if (magicsLoad) {
+    let load = JSON.parse(magicsLoad);
+    if (magicsLoad || load.length > 0) {
+      magics = load;
+    }
+  }
+
   if (magics.length > 0) {
     for (let i = 0; i < magics.length; i++) {
       magicContent += `<p class="underLine">${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button class="hide" onclick="deleteMagic(${i})">-</button>`;
@@ -279,13 +329,15 @@ function updateMagics() {
   } else {
     magicContent = " ";
   }
+
+  let magicsSave = localStorage.setItem("magics", JSON.stringify(magics));
   magicContent += initialMagicsContent;
   magicContainer.innerHTML = magicContent;
 }
 
 function deleteMagic(index) {
   magics.splice(index, 1);
-  updateMagics();
+  updateMagics(null);
 }
 
 // itens
@@ -306,7 +358,6 @@ function addItem() {
   itemAmount.value = "";
 }
 function updateItems() {
-  console.log("teste");
   itemsContent = " ";
   for (let i = 0; i < items.length; i++) {
     itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})">-</button></div>`;
@@ -322,20 +373,53 @@ function deleteItem(index) {
 const kitDiv = document.querySelector(".kitContainer");
 const kitName = document.querySelector(".kitName");
 let kitContent = " ";
+let kitSave;
 
 function addKit() {
   kitN = kitName.value;
   kitContent = `<div class="row underLine"><p>${kitN} <p><button  class="hide" onclick="deleteKit()">-</button></div>`;
-  updateKit();
+  updateKit(null);
   kitName.value = " ";
 }
 
-function updateKit() {
+function updateKit(kit) {
+  if (kit) {
+    kitDiv.innerHTML = `<div class="row underLine"><p>${kit} <p><button  class="hide" onclick="deleteKit()">-</button></div>`;
+    return;
+  }
   kitDiv.innerHTML = kitContent;
+  kitSave = localStorage.setItem("kit", kitName.value);
 }
 function deleteKit() {
-  kitDiv.innerHTML = " ";
+  kitDiv.innerHTML = "";
+  kitSave = localStorage.removeItem("kit");
 }
+
+// localStorage
+
+const charNameLoad = localStorage.getItem("charName");
+const kitLoad = localStorage.getItem("kit");
+const magicsLoad = localStorage.getItem("magics");
+const skillsLoad = localStorage.getItem("skills");
+const uniqueSkillLoad = localStorage.getItem("uniqueSkill");
+
+let skillParse;
+function parseSave() {
+  skillParse = JSON.parse(skillsLoad);
+  uniqueSkillParse = JSON.parse(uniqueSkillLoad);
+}
+
+function loadStorage() {
+  parseSave();
+  setName(charNameLoad);
+  updateKit(kitLoad);
+  atributesLoad();
+  ResistancePointSetter();
+  updateMagics(magicsLoad);
+  updateSkills(skillParse);
+  uniqueSkill(uniqueSkillParse);
+}
+
 // eventos
 
 // faz o calculo quando cade input tem valor alterado
