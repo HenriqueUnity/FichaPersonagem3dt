@@ -394,16 +394,29 @@ function deleteKit() {
   kitDiv.innerHTML = "";
   kitSave = localStorage.removeItem("kit");
 }
+//Add loreBG
+const textAreaInput = document.querySelector(".loreBg");
 
-// localStorage
+function saveLore() {
+  const saveLore = localStorage.setItem("loreLoad", textAreaInput.value);
+  console.log(textAreaInput.value);
+}
+
+function loadLore() {
+  const loadContent = localStorage.getItem("loreLoad");
+  textAreaInput.value = loadContent;
+}
+
+//localStorage
 
 const charNameLoad = localStorage.getItem("charName");
 const kitLoad = localStorage.getItem("kit");
 const magicsLoad = localStorage.getItem("magics");
 const skillsLoad = localStorage.getItem("skills");
 const uniqueSkillLoad = localStorage.getItem("uniqueSkill");
-
+const loreLoad = localStorage.getItem("loreLoad");
 let skillParse;
+
 function parseSave() {
   skillParse = JSON.parse(skillsLoad);
   uniqueSkillParse = JSON.parse(uniqueSkillLoad);
@@ -418,6 +431,11 @@ function loadStorage() {
   updateMagics(magicsLoad);
   updateSkills(skillParse);
   uniqueSkill(uniqueSkillParse);
+  loadLore();
+}
+//clear storage
+function clearStorage() {
+  localStorage.clear();
 }
 
 // eventos
