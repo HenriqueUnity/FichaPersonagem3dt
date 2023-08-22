@@ -140,3 +140,18 @@ option {
   margin-top: 1vh;
   padding: 5px;
 }
+.saveButton {
+  border-radius: 5px;
+  margin: 1vw;
+  padding: 5px;
+  font-size: 15px;
+}
+.inputText {
+  border-radius: 8px;
+  padding: 4px;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+p {
+  text-transform: capitalize;
+}

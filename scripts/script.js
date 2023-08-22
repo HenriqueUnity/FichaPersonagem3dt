@@ -353,11 +353,15 @@ function addItem() {
     amount: itemAmount.value,
   };
   items.push(newItem);
-  updateItems();
   itemName.value = "";
   itemAmount.value = "";
+  localStorage.setItem("items", JSON.stringify(items));
+  updateItems(items);
 }
-function updateItems() {
+function updateItems(load) {
+  if (load) {
+    items = load;
+  }
   itemsContent = " ";
   for (let i = 0; i < items.length; i++) {
     itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})">-</button></div>`;
@@ -394,19 +398,72 @@ function deleteKit() {
   kitDiv.innerHTML = "";
   kitSave = localStorage.removeItem("kit");
 }
+//damage type /// damage type///
+const damageSelect = document.querySelector(".strType");
+const damageRangedSelect = document.querySelector(".pdfType");
+function saveTypeDamage() {
+  let damageValue = damageSelect.value;
+  localStorage.setItem("damageType1", damageValue);
+}
 
-// localStorage
+function saveTypeDamage2() {
+  let damageRangedValue = damageRangedSelect.value;
+  localStorage.setItem("damageType2", damageRangedValue);
+}
+
+function loadTypeDamage() {
+  damageSelect.value = localStorage.getItem("damageType1");
+  damageRangedSelect.value = localStorage.getItem("damageType2");
+}
+//Add loreBG
+const textAreaInput = document.querySelector(".loreBg");
+
+function saveLore() {
+  const saveLore = localStorage.setItem("loreLoad", textAreaInput.value);
+  console.log(textAreaInput.value);
+}
+
+function loadLore() {
+  const loadContent = localStorage.getItem("loreLoad");
+  textAreaInput.value = loadContent;
+}
+
+//mana health
+const liveHP = document.querySelector("#lifeP");
+const liveMP = document.querySelector("#magicP");
+
+function saveMPHP() {
+  let hpSave = localStorage.setItem("hp", liveHP.value);
+  let mpSave = localStorage.setItem("mp", liveMP.value);
+}
+
+function loadMPHP() {
+  liveHP.value = localStorage.getItem("hp");
+  liveMP.value = localStorage.getItem("mp");
+}
+
+liveHP.addEventListener("input", function () {
+  saveMPHP();
+});
+liveMP.addEventListener("input", function () {
+  saveMPHP();
+});
+//localStorage
 
 const charNameLoad = localStorage.getItem("charName");
 const kitLoad = localStorage.getItem("kit");
 const magicsLoad = localStorage.getItem("magics");
 const skillsLoad = localStorage.getItem("skills");
 const uniqueSkillLoad = localStorage.getItem("uniqueSkill");
-
+const loreLoad = localStorage.getItem("loreLoad");
+const itemLoad = localStorage.getItem("items");
 let skillParse;
+let uniqueSkillParse;
+let itemsParse;
 function parseSave() {
   skillParse = JSON.parse(skillsLoad);
   uniqueSkillParse = JSON.parse(uniqueSkillLoad);
+  itemsParse = JSON.parse(itemLoad);
 }
 
 function loadStorage() {
@@ -418,9 +475,26 @@ function loadStorage() {
   updateMagics(magicsLoad);
   updateSkills(skillParse);
   uniqueSkill(uniqueSkillParse);
+  loadLore();
+  updateItems(itemsParse);
+  loadTypeDamage();
+  loadMPHP();
+}
+//clear storage
+function clearStorage() {
+  localStorage.clear();
 }
 
 // eventos
+//damage type change
+damageSelect.addEventListener("change", function () {
+  saveTypeDamage();
+  console.log(damageSelect.value);
+});
+damageRangedSelect.addEventListener("change", function () {
+  saveTypeDamage2();
+  console.log(damageRangedSelect.value);
+});
 
 // faz o calculo quando cade input tem valor alterado
 const inputsNumber = document.querySelectorAll(".atr");
