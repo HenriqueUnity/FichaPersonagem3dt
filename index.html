@@ -158,27 +158,27 @@
               <p>Poder de Fogo:</p>
             </div>
             <div class="col margin-left">
-              <select class="lock">
+              <select class="lock strType">
                 <option value="" disabled selected >Tipo de Dano</option>
-                <option>Corte</option>
-                <option>Perfuração</option>
-                <option>Esmagamento</option>
-                <option>Fogo</option>
-                <option>Frio</option>
-                <option>Elétrico</option>
-                <option>Químico</option>
-                <option>Sônico</option>          
+                <option value="corte">Corte</option>
+                <option value="perfuração">Perfuração</option>
+                <option value="Esmagamento">Esmagamento</option>
+                <option value="fogo">Fogo</option>
+                <option value="frio">Frio</option>
+                <option value="eletrico">Elétrico</option>
+                <option value="quimico">Químico</option>
+                <option value="sonico">Sônico</option>          
               </select>
-              <select class="lock">
+              <select class="lock pdfType">
                 <option value="" disabled selected >Tipo de Dano</option>
-                <option>Corte</option>
-                <option>Perfuração</option>
-                <option>Esmagamento</option>
-                <option>Fogo</option>
-                <option>Frio</option>
-                <option>Elétrico</option>
-                <option>Químico</option>
-                <option>Sônico</option>          
+                <option value="corte">Corte</option>
+                <option value="perfuração">Perfuração</option>
+                <option value="Esmagamento">Esmagamento</option>
+                <option value="fogo">Fogo</option>
+                <option value="frio">Frio</option>
+                <option value="eletrico">Elétrico</option>
+                <option value="quimico">Químico</option>
+                <option value="sonico">Sônico</option>       
               </select>
             </div>
 
@@ -207,7 +207,7 @@
         <div class="row">
           <input class="inputText" placeholder="Novo item" type="text" id="itemName">
           <input type="number" id="itemAmount" class="inputNumber">
-          <button onclick="addItem()">+</button>
+          <button onclick="addItem(null)">+</button>
         </div>    
         <div  class="inv" id="itemsContainer">
 
