@@ -9,7 +9,7 @@
   <script src="scripts/script.js" defer></script>        
       </head>
   <body>
-    <div>
+    <div class="title">
       <h1>Ficha de Personagem</h1>
       <div class="nameDiv"></div>
     </div>
@@ -19,7 +19,7 @@
     <button onclick="clearStorage()">Clear</button>
   </div>
   <div class="margin-left row hide">
-      <p>Nome:</p>
+      <p id="sheetName">Nome:</p>
       <input class="mainName inputText" type="text">
       <button onclick="setName(null)">+</button>
   </div>
@@ -43,11 +43,11 @@
           
         </div>
         <div class="col atribute">
-          <Input value="0" min="0" class="lock atr" id="strenghtAtri" type="number"></Input>
-          <Input value="0" min="0" class="lock atr" id="abilityAtri" type="number"></Input>
-          <Input value="0" min="0" class="lock atr" id="resistanceAtri" type="number"></Input>
-          <Input value="0" min="0" class="lock atr" id="armorAtri" type="number"></Input>
-          <Input value="0" min="0" class="lock atr" id="rangedAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="strenghtAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="abilityAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="resistanceAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="armorAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="rangedAtri" type="number"></Input>
         </div>
         </div>
 
@@ -66,8 +66,8 @@
           </div>  
           <div class="col">
             
-            <input class="maxBar inputNumber" id="maxLife" disabled />
-            <input class="maxBar inputNumber" id="maxMagic" disabled />
+            <input class="maxBar inputNumber" id="maxLife"  />
+            <input class="maxBar inputNumber" id="maxMagic"  />
             </div>
 
     </div>
@@ -77,7 +77,7 @@
         <h2>Vantagem única</h2>
       </div>
       <div class="row hide">
-        <input type="text" placeholder="Humano" class="uniqueName inputText"/>
+        <input type="text" placeholder="Humano, anão, alien ..." class="uniqueName inputText"/>
         <input type="number" value="0" class="uniqueSkillValue inputNumber atr"/>
         <button onclick="uniqueSkill(null)">+</button>
       </div>
@@ -109,7 +109,7 @@
       <div class="col">
         <h2>Vantagens</h2>
         <div class="row hide">
-          <input class="skillName inputText" type="text" placeholder="Nova habilidade">
+          <input class="skillName inputText" maxlength="25" type="text" placeholder="Nova habilidade">
           <input class="skillValue inputNumber" min="0" type="number" placeholder="Custo">
           <button onclick="addSkill()">+</button>
         </div>
@@ -124,7 +124,7 @@
       <div class="margin-left">
         <h2>Desvantagens</h2>
         <div class="row hide">
-          <input class="badskillName inputText" type="text" placeholder="Nova fraqueza" >
+          <input class="badskillName inputText" maxlength="25" type="text" placeholder="Nova fraqueza" >
           <input class="badskillValue inputNumber" max="0" type="number" placeholder="Custo"/>
           <button  onclick="addSkillNegative()">+</button>
 

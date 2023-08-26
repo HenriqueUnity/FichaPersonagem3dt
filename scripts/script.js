@@ -1,5 +1,3 @@
-let lock = false;
-
 //health points mana points multiplier
 const resAtri = document.querySelector("#resistanceAtri");
 resAtri.addEventListener("input", function () {
@@ -9,7 +7,6 @@ function ResistancePointSetter() {
   let res = resAtri.value;
   SetMaxLifeMagic(res);
 }
-
 function SetMaxLifeMagic(res) {
   const life = document.getElementById("maxLife");
   const magic = document.getElementById("maxMagic");
@@ -22,7 +19,6 @@ function SetMaxLifeMagic(res) {
     magic.value = res * defaultMultiplier;
   }
 }
-
 //setar nome
 const mainName = document.querySelector(".mainName");
 const divname = document.querySelector(".nameDiv");
@@ -33,12 +29,16 @@ function setName(name) {
     console.log(name);
     return;
   }
+
+  if (mainName.value == "" || mainName.value == " ") {
+    return;
+  }
   divname.innerHTML = `<h2>${mainName.value}</h2> `;
   nameSave = localStorage.setItem("charName", mainName.value);
 }
 
+let lock = false;
 // lock atributes
-
 const atributes = document.getElementsByClassName("lock");
 
 function lockUnlockHidden() {
@@ -61,7 +61,6 @@ function lockUnlockHidden() {
     }
   }
 }
-
 //skills
 let skills = [];
 let container = document.querySelector(".skillContainer");
@@ -78,6 +77,13 @@ const skillValue = document.querySelector(".skillValue");
 function addSkill() {
   let nameSkill = skillName.value;
   let cost = skillValue.value;
+
+  if (nameSkill == "" || nameSkill == " ") {
+    return;
+  }
+  if (cost == "" || cost == " ") {
+    cost = 0;
+  }
   let newskill = {
     name: nameSkill,
     value: cost,
@@ -97,6 +103,13 @@ const badSkillValue = document.querySelector(".badskillValue");
 function addSkillNegative() {
   nameSkill = badSkillName.value;
   cost = badSkillValue.value;
+  if (nameSkill == "" || nameSkill == " ") {
+    return;
+  }
+  if (cost == "" || cost == " ") {
+    cost = 0;
+  }
+
   let newskill = {
     name: nameSkill,
     value: cost,
@@ -108,7 +121,7 @@ function addSkillNegative() {
   negativePointsLimit(badSkillsTotal);
 
   badSkillName.value = "";
-  badSkillValue.value = 0;
+  badSkillValue.value = "";
 }
 
 //limite de desvantagens
@@ -158,7 +171,7 @@ function updateSkills(skillsLoaded) {
       badSkillsTotal += parseInt(skills[i].value);
     }
   }
-  let skillSave = localStorage.setItem("skills", JSON.stringify(skills));
+  localStorage.setItem("skills", JSON.stringify(skills));
   container.innerHTML = content;
   container2.innerHTML = content2;
   totalPoints();
@@ -179,29 +192,26 @@ function uniqueSkillValue() {
   return uniqueTotalMod.value;
 }
 
+let uniqueObject = {
+  name: "",
+  cost: "",
+};
 function uniqueSkill(uniqueSkillLoaded) {
-  let uniqueObject = {
-    name: "",
-    cost: "",
-  };
-
   uniqueObject.name = uniqueSkillName.value;
   uniqueObject.cost = uniqueSkillInput.value;
   if (uniqueSkillLoaded) {
     uniqueObject.name = uniqueSkillLoaded.name;
     uniqueObject.cost = uniqueSkillLoaded.cost;
   }
-  if (uniqueObject.name == "") {
-    uniqueObject.name = "Humano";
+  if (uniqueObject.name == "" || uniqueObject.name == " ") {
+    return;
   }
-  let saveUniqueSkill = localStorage.setItem(
-    "uniqueSkill",
-    JSON.stringify(uniqueObject)
-  );
+  if (uniqueObject) console.log(uniqueSkillLoaded);
+  localStorage.setItem("uniqueSkill", JSON.stringify(uniqueObject));
   uniqueSkilldiv.innerHTML = `<p class="underLine">${uniqueObject.name} (${uniqueObject.cost})</p>`;
 
   uniqueSkillName.value = "";
-  uniqueSkillInput.value = 0;
+  uniqueSkillInput.value = "";
 }
 
 /// contador de pontos totais
@@ -330,7 +340,7 @@ function updateMagics(magicsLoad) {
     magicContent = " ";
   }
 
-  let magicsSave = localStorage.setItem("magics", JSON.stringify(magics));
+  localStorage.setItem("magics", JSON.stringify(magics));
   magicContent += initialMagicsContent;
   magicContainer.innerHTML = magicContent;
 }
@@ -419,7 +429,7 @@ function loadTypeDamage() {
 const textAreaInput = document.querySelector(".loreBg");
 
 function saveLore() {
-  const saveLore = localStorage.setItem("loreLoad", textAreaInput.value);
+  localStorage.setItem("loreLoad", textAreaInput.value);
   console.log(textAreaInput.value);
 }
 
@@ -433,8 +443,8 @@ const liveHP = document.querySelector("#lifeP");
 const liveMP = document.querySelector("#magicP");
 
 function saveMPHP() {
-  let hpSave = localStorage.setItem("hp", liveHP.value);
-  let mpSave = localStorage.setItem("mp", liveMP.value);
+  localStorage.setItem("hp", liveHP.value);
+  localStorage.setItem("mp", liveMP.value);
 }
 
 function loadMPHP() {
@@ -467,6 +477,9 @@ function parseSave() {
 }
 
 function loadStorage() {
+  if (lock) {
+    return;
+  }
   parseSave();
   setName(charNameLoad);
   updateKit(kitLoad);
@@ -482,6 +495,13 @@ function loadStorage() {
 }
 //clear storage
 function clearStorage() {
+  setName(" ");
+  updateKit(" ");
+  updateMagics((magics = []));
+  updateSkills((skills = []));
+  uniqueSkill("");
+  updateItems((items = []));
+
   localStorage.clear();
 }
 
