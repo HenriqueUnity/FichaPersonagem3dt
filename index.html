@@ -78,7 +78,7 @@
       </div>
       <div class="row hide">
         <input type="text" placeholder="Humano, anão, alien ..." class="uniqueName inputText"/>
-        <input type="number" value="0" class="uniqueSkillValue inputNumber atr"/>
+        <input type="number" value="0" class="uniqueSkillValue inputNumber"/>
         <button onclick="uniqueSkill(null)">+</button>
       </div>
       <div class="row hide">
@@ -102,7 +102,10 @@
      <div class="kitContainer">
 
      </div>
+     <div class="hide kitPointsdiv infoTemp">
+       <p>Pontos gastos com kits extras = 0 </p>
 
+     </div>
     </div>
 
     <div class="row margin-top margin-left">
@@ -123,7 +126,7 @@
 
       <div class="margin-left">
         <h2>Desvantagens</h2>
-        <div class="row hide">
+        <div class="row hide ">
           <input class="badskillName inputText" maxlength="25" type="text" placeholder="Nova fraqueza" >
           <input class="badskillValue inputNumber" max="0" type="number" placeholder="Custo"/>
           <button  onclick="addSkillNegative()">+</button>
@@ -201,7 +204,6 @@
         <div class="magicContainer">  
         </div>        
       </div>  
-
         <div class="col margin-left">
           <h2>Inventário</h2>
         <div class="row">
@@ -210,17 +212,13 @@
           <button onclick="addItem(null)">+</button>
         </div>    
         <div  class="inv" id="itemsContainer">
-
         </div>
-
         <div>
           <h2>História</h2>
           <textarea placeholder="Era uma vez..." class="lock loreBg" name="lore" id="lore" cols="30" rows="10"></textarea>
            <button class="hide saveButton" onclick="saveLore()">Save lore</button>
-        </div>
-     
-    <!--*^^ fim da segunda coluna ^^-->   
-      
+        </div>     
+    <!--*^^ fim da segunda coluna ^^-->         
   </div>
        </div>
       </div>

@@ -125,7 +125,8 @@ textarea {
   align-items: center;
   justify-content: center;
 }
-.hidden {
+.hidden,
+.infoTemp {
   visibility: hidden;
   position: absolute;
 }

@@ -225,7 +225,7 @@ function totalPoints() {
   let uniqueSkill = uniqueSkillInput.value;
   total += parseInt(atributesTotalPoints());
   total += parseInt(uniqueSkill);
-
+  total += counter;
   total -= parseInt(uniqueSkillValue());
 
   if (total > maxPoints) {
@@ -383,30 +383,66 @@ function deleteItem(index) {
   items.splice(index, 1);
   updateItems();
 }
-//add kit
+//add kit  //     kit    //
 const kitDiv = document.querySelector(".kitContainer");
 const kitName = document.querySelector(".kitName");
+const kitPoints = document.querySelector(".kitPointsdiv");
 let kitContent = " ";
 let kitSave;
+let kitList = [];
+let kitTotalCost = 0;
 
 function addKit() {
   kitN = kitName.value;
-  kitContent = `<div class="row underLine"><p>${kitN} <p><button  class="hide" onclick="deleteKit()">-</button></div>`;
+  if (kitN == "" || kitN == " ") {
+    return;
+  }
+  kitList.push(kitN);
   updateKit(null);
-  kitName.value = " ";
+  kitName.value = "";
 }
 
 function updateKit(kit) {
   if (kit) {
-    kitDiv.innerHTML = `<div class="row underLine"><p>${kit} <p><button  class="hide" onclick="deleteKit()">-</button></div>`;
+    kitContent = "";
+    for (let i = 0; i < kit.length; i++) {
+      kitContent += `<div class="row underLine"><p>${kit[i]} <p><button  class="hide" onclick="deleteKit(${i})">-</button></div>`;
+      kitDiv.innerHTML = kitContent;
+    }
+    kitCount(kit.length);
     return;
   }
+  kitContent = "";
+  for (let i = 0; i < kitList.length; i++) {
+    kitContent += `<div class="row underLine"><p>${kitList[i]} <p><button class="hide" onclick="deleteKit(${i})">-</button></div>`;
+  }
   kitDiv.innerHTML = kitContent;
-  kitSave = localStorage.setItem("kit", kitName.value);
+  kitSave = localStorage.setItem("kit", JSON.stringify(kitList));
+  kitCount(kitList.length);
 }
-function deleteKit() {
-  kitDiv.innerHTML = "";
-  kitSave = localStorage.removeItem("kit");
+function deleteKit(index) {
+  kitList.splice(index, 1);
+  updateKit(null);
+}
+let counter = 0;
+
+function kitCount(lenghtCount) {
+  if (lenghtCount <= 1) {
+    kitPoints.classList.add("infoTemp");
+    counter = 0;
+    totalPoints();
+  } else {
+    counter = 0;
+    kitPoints.classList.remove("infoTemp");
+    console.log(counter);
+    for (let i = 1; i < lenghtCount; i++) {
+      counter += i;
+
+      kitPoints.innerHTML = `<p>
+          Pontos gastos com kits extras = ${counter} </p>`;
+    }
+    totalPoints();
+  }
 }
 //damage type /// damage type///
 const damageSelect = document.querySelector(".strType");
@@ -474,6 +510,7 @@ function parseSave() {
   skillParse = JSON.parse(skillsLoad);
   uniqueSkillParse = JSON.parse(uniqueSkillLoad);
   itemsParse = JSON.parse(itemLoad);
+  kitListParse = JSON.parse(kitLoad);
 }
 
 function loadStorage() {
@@ -482,7 +519,7 @@ function loadStorage() {
   }
   parseSave();
   setName(charNameLoad);
-  updateKit(kitLoad);
+  updateKit(kitListParse);
   atributesLoad();
   ResistancePointSetter();
   updateMagics(magicsLoad);
