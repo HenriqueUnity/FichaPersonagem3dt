@@ -1,4 +1,5 @@
 //health points mana points multiplier
+
 const resAtri = document.querySelector("#resistanceAtri");
 resAtri.addEventListener("input", function () {
   ResistancePointSetter();
@@ -66,7 +67,7 @@ let skills = [];
 let container = document.querySelector(".skillContainer");
 let container2 = document.querySelector(".badskillContainer");
 let badSkillsTotal;
-let maxPoints = document.querySelector("#maxCharPoints").value;
+const maxPoints = document.querySelector("#maxCharPoints");
 const pointsDiv = document.querySelector(".totalPoints");
 
 // add vantagens
@@ -127,8 +128,7 @@ function addSkillNegative() {
 //limite de desvantagens
 function negativePointsLimit(badTotal) {
   let maxNegative;
-  maxPoints = document.querySelector("#maxCharPoints").value;
-  switch (parseInt(maxPoints)) {
+  switch (parseInt(maxPoints.value)) {
     case 5:
       maxNegative = -3;
       break;
@@ -164,10 +164,10 @@ function updateSkills(skillsLoaded) {
   for (let i = 0; i < skills.length; i++) {
     if (!skills[i].bad) {
       content += `<p class="underLine" id="${i}">${skills[i].name} (${skills[i].value})</p> 
-      <button class="hide" onclick="deleteSkills(${i})">x</button>`;
+      <button class="hide plus-button" onclick="deleteSkills(${i})"><i class="bi bi-trash"></i></button>`;
     } else {
       content2 += `<p class="underLine" id="${i}">${skills[i].name} (${skills[i].value})</p> 
-      <button class="hide" onclick="deleteSkills(${i})">x</button>`;
+      <button class="hide plus-button" onclick="deleteSkills(${i})"><i class="bi bi-trash"></i></button>`;
       badSkillsTotal += parseInt(skills[i].value);
     }
   }
@@ -211,30 +211,30 @@ function uniqueSkill(uniqueSkillLoaded) {
   uniqueSkilldiv.innerHTML = `<p class="underLine">${uniqueObject.name} (${uniqueObject.cost})</p>`;
 
   uniqueSkillName.value = "";
-  uniqueSkillInput.value = "";
+  uniqueSkillInput.value = 0;
 }
 
 /// contador de pontos totais
 
 function totalPoints() {
   let total = 0;
-  maxPoints = document.querySelector("#maxCharPoints").value;
+
   for (let i = 0; i < skills.length; i++) {
     total += parseInt(skills[i].value);
   }
   let uniqueSkill = uniqueSkillInput.value;
   total += parseInt(atributesTotalPoints());
   total += parseInt(uniqueSkill);
-  total += counter;
+  total += parseInt(counter);
   total -= parseInt(uniqueSkillValue());
 
-  if (total > maxPoints) {
+  if (total > maxPoints.value) {
     pointsDiv.innerHTML = `<p class="off-Limits">Pontos excedentes = ${
-      (maxPoints - total) * -1
+      (maxPoints.value - total) * -1
     }</p>`;
   } else pointsDiv.innerHTML = `<p>Pontos gastos = ${total}</p>`;
 
-  if (total === parseInt(maxPoints)) {
+  if (total === parseInt(maxPoints.value)) {
     pointsDiv.innerHTML = `<p>Todos pontos já distribuidos!</p>`;
   }
 }
@@ -273,6 +273,15 @@ function atributesTotalPoints() {
     parseInt(pwrAtr);
 
   return total;
+}
+
+/// zerar atributos
+function atributesToZero() {
+  str.value = 0;
+  abi.value = 0;
+  res.value = 0;
+  arm.value = 0;
+  pwr.value = 0;
 }
 
 /// container das magias
@@ -334,7 +343,7 @@ function updateMagics(magicsLoad) {
 
   if (magics.length > 0) {
     for (let i = 0; i < magics.length; i++) {
-      magicContent += `<p class="underLine">${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button class="hide" onclick="deleteMagic(${i})">-</button>`;
+      magicContent += `<p class="underLine">${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button class="hide plus-button" onclick="deleteMagic(${i})"><i class="bi bi-trash"></i></button>`;
     }
   } else {
     magicContent = " ";
@@ -374,7 +383,7 @@ function updateItems(load) {
   }
   itemsContent = " ";
   for (let i = 0; i < items.length; i++) {
-    itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})">-</button></div>`;
+    itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})" class="plus-button"><i class="bi bi-trash"></i></button></div>`;
   }
   itemsDiv.innerHTML = itemsContent;
 }
@@ -406,7 +415,7 @@ function updateKit(kit) {
   if (kit) {
     kitContent = "";
     for (let i = 0; i < kit.length; i++) {
-      kitContent += `<div class="row underLine"><p>${kit[i]} <p><button  class="hide" onclick="deleteKit(${i})">-</button></div>`;
+      kitContent += `<div class="row underLine"><p>${kit[i]} <p><button  class="hide plus-button" onclick="deleteKit(${i})"><i class="bi bi-trash"></i></button></div>`;
       kitDiv.innerHTML = kitContent;
     }
     kitCount(kit.length);
@@ -414,7 +423,7 @@ function updateKit(kit) {
   }
   kitContent = "";
   for (let i = 0; i < kitList.length; i++) {
-    kitContent += `<div class="row underLine"><p>${kitList[i]} <p><button class="hide" onclick="deleteKit(${i})">-</button></div>`;
+    kitContent += `<div class="row underLine"><p>${kitList[i]} <p><button class="hide plus-button" onclick="deleteKit(${i})"><i class="bi bi-trash"></i></button></div>`;
   }
   kitDiv.innerHTML = kitContent;
   kitSave = localStorage.setItem("kit", JSON.stringify(kitList));
@@ -529,17 +538,27 @@ function loadStorage() {
   updateItems(itemsParse);
   loadTypeDamage();
   loadMPHP();
+  maxPointsLoad();
 }
+function maxPointsLoad() {
+  maxPoints.value = localStorage.getItem("maxCharP");
+  totalPoints();
+}
+
 //clear storage
 function clearStorage() {
-  setName(" ");
-  updateKit(" ");
-  updateMagics((magics = []));
-  updateSkills((skills = []));
-  uniqueSkill("");
-  updateItems((items = []));
-
+  clearArrays();
   localStorage.clear();
+  location.reload();
+  atributesToZero();
+}
+function clearArrays() {
+  magics.length = 0;
+  skills.length = 0;
+  items.length = 0;
+  kitList.length = 0;
+  damageRangedSelect.value = "";
+  damageSelect.value = "";
 }
 
 // eventos
@@ -564,8 +583,20 @@ for (let i = 0; i < inputsNumber.length; i++) {
 
 //evento para calcular pontos assim q seleciona o select
 
-const maxPointsEvent = document.querySelector("#maxCharPoints");
-
-maxPointsEvent.addEventListener("input", function () {
+maxPoints.addEventListener("input", function () {
+  localStorage.setItem("maxCharP", maxPoints.value);
   totalPoints();
+});
+
+const lockButton = document.querySelector("#lockButton");
+const lockImg = document.querySelector("#lockImg");
+
+lockButton.addEventListener("click", function () {
+  if (lockImg.classList.contains("bi-lock")) {
+    lockImg.classList.remove("bi-lock");
+    lockImg.classList.add("bi-lock-fill");
+  } else {
+    lockImg.classList.remove("bi-lock-fill");
+    lockImg.classList.add("bi-lock");
+  }
 });
