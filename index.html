@@ -15,9 +15,11 @@
       <div class="nameDiv"></div>
     </div>
     <div class="row utility">
-    <button id="lockButton" onclick="lockUnlockHidden()"><i id="lockImg" class="bi bi-lock">Lock</i></button>
+    <button id="lockButton" onclick="lockUnlockHidden()"><i id="lockImg" class="bi bi-lock"></i>Lock</button>
     <button class="hide" onclick="loadStorage()"><i class="bi bi-arrow-counterclockwise"></i>Load</button>
     <button class="hide" onclick="clearStorage()"><i class="bi bi-eraser-fill"></i>Clear</button>
+    <button onclick="saveJSON()">saveTeste</button>
+    <button onclick="loadJSON()">loadteste</button>
     
   </div>
   <div class="margin-left row hide">
@@ -72,7 +74,18 @@
             <input class="maxBar inputNumber" id="maxMagic"  />
             </div>
 
-    </div>
+        </div>
+
+        <div class="row-start margin-left margin-top col1">
+          <div class="col">
+            <p class="forceLine max-width">Pontos de Experiência:</p>                     
+          </div>
+         
+          <div class="col">            
+            <input type="number" class="maxBar inputNumber" id="exp"  />           
+            </div>
+
+        </div>
 
     <div class="col margin-left">
       <div class="row">
@@ -226,5 +239,8 @@
       </div>
       <div class="hide totalPoints">
         <p>Pontos gastos = 0</p></div>
+
+        <h6>v.02 @dev_telmo</h6>
+
   </body>
 </html>

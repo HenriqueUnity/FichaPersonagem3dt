@@ -1,5 +1,4 @@
 //health points mana points multiplier
-
 const resAtri = document.querySelector("#resistanceAtri");
 resAtri.addEventListener("input", function () {
   ResistancePointSetter();
@@ -24,6 +23,7 @@ function SetMaxLifeMagic(res) {
 const mainName = document.querySelector(".mainName");
 const divname = document.querySelector(".nameDiv");
 let nameSave;
+let nameSaveToJSON;
 function setName(name) {
   if (name != null) {
     divname.innerHTML = `<h2>${name}</h2> `;
@@ -36,6 +36,7 @@ function setName(name) {
   }
   divname.innerHTML = `<h2>${mainName.value}</h2> `;
   nameSave = localStorage.setItem("charName", mainName.value);
+  nameSaveToJSON = mainName.value;
 }
 
 let lock = false;
@@ -118,7 +119,6 @@ function addSkillNegative() {
   };
   skills.push(newskill);
   updateSkills();
-  console.log(badSkillsTotal);
   negativePointsLimit(badSkillsTotal);
 
   badSkillName.value = "";
@@ -152,7 +152,7 @@ function negativePointsLimit(badTotal) {
     pointsDiv.innerHTML = `<p class="off-Limits">Excedeu o número de desvantagens permitidas!</p>`;
   } else return;
 }
-
+let skillsToJSON;
 function updateSkills(skillsLoaded) {
   let content = "";
   let content2 = "";
@@ -172,6 +172,7 @@ function updateSkills(skillsLoaded) {
     }
   }
   localStorage.setItem("skills", JSON.stringify(skills));
+  skillsToJSON = skills;
   container.innerHTML = content;
   container2.innerHTML = content2;
   totalPoints();
@@ -187,7 +188,7 @@ const uniqueSkillName = document.querySelector(".uniqueName");
 const uniqueSkillInput = document.querySelector(".uniqueSkillValue");
 const uniqueSkilldiv = document.querySelector(".uniqueSkillContainer");
 const uniqueTotalMod = document.querySelector(".uniqueSkillPoints");
-
+let uniqueSkillToJSon;
 function uniqueSkillValue() {
   return uniqueTotalMod.value;
 }
@@ -208,6 +209,7 @@ function uniqueSkill(uniqueSkillLoaded) {
   }
   if (uniqueObject) console.log(uniqueSkillLoaded);
   localStorage.setItem("uniqueSkill", JSON.stringify(uniqueObject));
+  uniqueSkillToJSon = uniqueObject;
   uniqueSkilldiv.innerHTML = `<p class="underLine">${uniqueObject.name} (${uniqueObject.cost})</p>`;
 
   uniqueSkillName.value = "";
@@ -254,6 +256,7 @@ function atributesLoad() {
   arm.value = atributes[3];
   pwr.value = atributes[4];
 }
+let atributesToJSON;
 function atributesTotalPoints() {
   let strAtr = str.value;
   let abiAtr = abi.value;
@@ -262,6 +265,7 @@ function atributesTotalPoints() {
   let pwrAtr = pwr.value;
   let allAtr = [strAtr, abiAtr, resAtr, armAtr, pwrAtr];
   let allAtrJson = JSON.stringify(allAtr);
+  atributesToJSON = allAtr;
   atrSave = localStorage.setItem("atributes", allAtrJson);
   console.log(JSON.parse(allAtrJson));
 
@@ -319,6 +323,12 @@ function defaultMagics() {
 }
 
 function addMagic() {
+  if (magicName.value == "" || magicName.value == " ") {
+    return;
+  }
+  if (magicCost.value == " " || magicCost.value == "") {
+    magicCost.value = 0;
+  }
   magicContent = " ";
   magicNameString = magicName.value;
   magicCostValue = magicCost.value;
@@ -332,6 +342,7 @@ function addMagic() {
   magicCost.value = 0;
 }
 
+let magicsToJSON;
 function updateMagics(magicsLoad) {
   magicContent = "";
   if (magicsLoad) {
@@ -340,7 +351,6 @@ function updateMagics(magicsLoad) {
       magics = load;
     }
   }
-
   if (magics.length > 0) {
     for (let i = 0; i < magics.length; i++) {
       magicContent += `<p class="underLine">${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button class="hide plus-button" onclick="deleteMagic(${i})"><i class="bi bi-trash"></i></button>`;
@@ -348,7 +358,7 @@ function updateMagics(magicsLoad) {
   } else {
     magicContent = " ";
   }
-
+  magicsToJSON = magics;
   localStorage.setItem("magics", JSON.stringify(magics));
   magicContent += initialMagicsContent;
   magicContainer.innerHTML = magicContent;
@@ -362,11 +372,15 @@ function deleteMagic(index) {
 // itens
 let items = [];
 let itemsContent = " ";
+let itemsToJSON;
 const itemName = document.querySelector("#itemName");
 const itemAmount = document.querySelector("#itemAmount");
 const itemsDiv = document.querySelector("#itemsContainer");
 
 function addItem() {
+  if (itemName.value == "" || itemName.value == " ") {
+    return;
+  }
   let newItem = {
     name: itemName.value,
     amount: itemAmount.value,
@@ -374,6 +388,7 @@ function addItem() {
   items.push(newItem);
   itemName.value = "";
   itemAmount.value = "";
+  itemsToJSON = items;
   localStorage.setItem("items", JSON.stringify(items));
   updateItems(items);
 }
@@ -410,7 +425,7 @@ function addKit() {
   updateKit(null);
   kitName.value = "";
 }
-
+let kitToJSON;
 function updateKit(kit) {
   if (kit) {
     kitContent = "";
@@ -426,6 +441,7 @@ function updateKit(kit) {
     kitContent += `<div class="row underLine"><p>${kitList[i]} <p><button class="hide plus-button" onclick="deleteKit(${i})"><i class="bi bi-trash"></i></button></div>`;
   }
   kitDiv.innerHTML = kitContent;
+  kitToJSON = kitList;
   kitSave = localStorage.setItem("kit", JSON.stringify(kitList));
   kitCount(kitList.length);
 }
@@ -456,13 +472,17 @@ function kitCount(lenghtCount) {
 //damage type /// damage type///
 const damageSelect = document.querySelector(".strType");
 const damageRangedSelect = document.querySelector(".pdfType");
+let damageType1;
+let damageType2;
 function saveTypeDamage() {
   let damageValue = damageSelect.value;
+  damageType1 = damageValue;
   localStorage.setItem("damageType1", damageValue);
 }
 
 function saveTypeDamage2() {
   let damageRangedValue = damageRangedSelect.value;
+  damageType2 = damageRangedValue;
   localStorage.setItem("damageType2", damageRangedValue);
 }
 
@@ -473,7 +493,9 @@ function loadTypeDamage() {
 //Add loreBG
 const textAreaInput = document.querySelector(".loreBg");
 
+let loreToJSON;
 function saveLore() {
+  loreToJSON = textAreaInput.value;
   localStorage.setItem("loreLoad", textAreaInput.value);
   console.log(textAreaInput.value);
 }
@@ -487,7 +509,12 @@ function loadLore() {
 const liveHP = document.querySelector("#lifeP");
 const liveMP = document.querySelector("#magicP");
 
+let HpToJSON;
+let MpToJSON;
+
 function saveMPHP() {
+  HpToJSON = liveHP.value;
+  MpToJSON = liveMP.value;
   localStorage.setItem("hp", liveHP.value);
   localStorage.setItem("mp", liveMP.value);
 }
@@ -503,6 +530,34 @@ liveHP.addEventListener("input", function () {
 liveMP.addEventListener("input", function () {
   saveMPHP();
 });
+//new save system slot
+
+//TODO continuar sistema melhorado de save
+let slot1;
+function saveJSON() {
+  for (let i = 0; i < slot1.length; i++) {
+    const element = array[i];
+  }
+  slot1 = [
+    nameSaveToJSON,
+    atributesToJSON,
+    skillsToJSON,
+    magicsToJSON,
+    HpToJSON,
+    MpToJSON,
+    uniqueSkillToJSon,
+    kitToJSON,
+    itemsToJSON,
+    loreToJSON,
+  ];
+  localStorage.setItem("slot1", JSON.stringify(slot1));
+}
+
+function loadJSON() {
+  let loadSlot = JSON.parse(localStorage.getItem("slot1"));
+  console.log(loadSlot);
+}
+
 //localStorage
 
 const charNameLoad = localStorage.getItem("charName");
@@ -539,6 +594,7 @@ function loadStorage() {
   loadTypeDamage();
   loadMPHP();
   maxPointsLoad();
+  exp.value = localStorage.getItem("exp");
 }
 function maxPointsLoad() {
   maxPoints.value = localStorage.getItem("maxCharP");
@@ -599,4 +655,10 @@ lockButton.addEventListener("click", function () {
     lockImg.classList.remove("bi-lock-fill");
     lockImg.classList.add("bi-lock");
   }
+});
+
+const exp = document.querySelector("#exp");
+
+exp.addEventListener("input", function () {
+  localStorage.setItem("exp", exp.value);
 });

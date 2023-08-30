@@ -1,10 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,300;0,400;0,700;1,400&family=Dancing+Script&family=Oswald:wght@300;600;700&family=Raleway:ital,wght@0,400;0,700;1,100&family=Roboto+Condensed:ital,wght@0,400;0,700;1,300&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,400;1,700&family=Tilt+Prism&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
 * {
   margin: 0;
   padding: 0;
   font-family: "Roboto Condensed", sans-serif;
-  background-color: #ccc4c4;
+  background-color: #ebe8e8;
 }
 
 input {
@@ -29,6 +30,22 @@ h1 {
   font-family: "Tilt Prism", cursive;
   font-size: 48px;
   margin-bottom: 2vh;
+}
+button {
+  color: #ffb319;
+  background-color: #615c5c;
+}
+input,
+select {
+  background-color: #615c5c;
+  color: #ffb319;
+}
+select {
+  max-width: 300px;
+}
+i {
+  color: #e30075;
+  background-color: #ebe8e8;
 }
 
 .nameDiv {
@@ -102,6 +119,8 @@ textarea {
   font-family: "Tilt Prism", cursive;
   font-family: "Dancing Script", cursive;
   font-size: 20px;
+  color: #ffb319;
+  background-color: #615c5c;
 }
 .totalPoints {
   display: flex;
