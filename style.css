@@ -121,6 +121,7 @@ textarea {
   font-size: 20px;
   color: #ffb319;
   background-color: #615c5c;
+  border-radius: 10px;
 }
 .totalPoints {
   display: flex;
