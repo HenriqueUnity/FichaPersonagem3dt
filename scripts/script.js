@@ -1,46 +1,6 @@
-let lock = false;
-
-//health points mana points multiplier
-const resAtri = document.querySelector("#resistanceAtri");
-resAtri.addEventListener("input", function () {
-  ResistancePointSetter();
-});
-function ResistancePointSetter() {
-  let res = resAtri.value;
-  SetMaxLifeMagic(res);
-}
-
-function SetMaxLifeMagic(res) {
-  const life = document.getElementById("maxLife");
-  const magic = document.getElementById("maxMagic");
-  const defaultMultiplier = 5;
-  if (res == 0) {
-    life.value = 1;
-    magic.value = 1;
-  } else {
-    life.value = res * defaultMultiplier;
-    magic.value = res * defaultMultiplier;
-  }
-}
-
-//setar nome
-const mainName = document.querySelector(".mainName");
-const divname = document.querySelector(".nameDiv");
-let nameSave;
-function setName(name) {
-  if (name != null) {
-    divname.innerHTML = `<h2>${name}</h2> `;
-    console.log(name);
-    return;
-  }
-  divname.innerHTML = `<h2>${mainName.value}</h2> `;
-  nameSave = localStorage.setItem("charName", mainName.value);
-}
-
-// lock atributes
-
+/// lock atributes  unlock atributes ///
 const atributes = document.getElementsByClassName("lock");
-
+let lock = false;
 function lockUnlockHidden() {
   let hide = document.querySelectorAll(".hide");
   if (!lock) {
@@ -62,15 +22,118 @@ function lockUnlockHidden() {
   }
 }
 
-//skills
+//setar nome  ///set Name
+const mainName = document.querySelector(".mainName");
+const divname = document.querySelector(".nameDiv");
+let nameSaveToJSON;
+
+function setName(name) {
+  if (name != null) {
+    divname.innerHTML = `<h2>${name}</h2> `;
+    nameSaveToJSON = name;
+    return;
+  }
+
+  if (mainName.value == "" || mainName.value == " ") {
+    return;
+  }
+
+  divname.innerHTML = `<h2>${mainName.value}</h2> `;
+}
+
+function saveName() {
+  nameSaveToJSON = mainName.value;
+}
+function loadName() {
+  charName = loadSlot[0];
+  setName(charName);
+  nameSaveToJSON = charName;
+}
+
+///atributes elements setup ///
+
+const str = document.querySelector("#strenghtAtri");
+const abi = document.querySelector("#abilityAtri");
+const res = document.querySelector("#resistanceAtri");
+const arm = document.querySelector("#armorAtri");
+const pwr = document.querySelector("#rangedAtri");
+
+function atributesLoad(load) {
+  let atributes = load;
+
+  str.value = atributes[0];
+  abi.value = atributes[1];
+  res.value = atributes[2];
+  arm.value = atributes[3];
+  pwr.value = atributes[4];
+}
+let atributesToJSON;
+let allAtr;
+
+function allAtributesSet() {
+  let strAtr = str.value;
+  let abiAtr = abi.value;
+  let resAtr = res.value;
+  let armAtr = arm.value;
+  let pwrAtr = pwr.value;
+  allAtr = [strAtr, abiAtr, resAtr, armAtr, pwrAtr];
+}
+function atributesTotalPoints() {
+  allAtributesSet();
+  let total =
+    parseInt(allAtr[0]) +
+    parseInt(allAtr[1]) +
+    parseInt(allAtr[2]) +
+    parseInt(allAtr[3]) +
+    parseInt(allAtr[4]);
+  return total;
+}
+
+function saveAtributes() {
+  allAtributesSet();
+  atributesToJSON = allAtr;
+}
+
+/// zerar atributos  default atributes ///
+function atributesToZero() {
+  str.value = 0;
+  abi.value = 0;
+  res.value = 0;
+  arm.value = 0;
+  pwr.value = 0;
+}
+
+//health points mana points multiplier
+const resAtri = document.querySelector("#resistanceAtri");
+resAtri.addEventListener("input", function () {
+  ResistancePointSetter();
+});
+function ResistancePointSetter() {
+  let res = resAtri.value;
+  SetMaxLifeMagic(res);
+}
+function SetMaxLifeMagic(res) {
+  const life = document.getElementById("maxLife");
+  const magic = document.getElementById("maxMagic");
+  const defaultMultiplier = 5;
+  if (res == 0) {
+    life.value = 1;
+    magic.value = 1;
+  } else {
+    life.value = res * defaultMultiplier;
+    magic.value = res * defaultMultiplier;
+  }
+}
+///skills   /// vantagens /// skills
+
 let skills = [];
 let container = document.querySelector(".skillContainer");
 let container2 = document.querySelector(".badskillContainer");
 let badSkillsTotal;
-let maxPoints = document.querySelector("#maxCharPoints").value;
+const maxPoints = document.querySelector("#maxCharPoints");
 const pointsDiv = document.querySelector(".totalPoints");
 
-// add vantagens
+///  add vantagens /// add skills
 
 const skillName = document.querySelector(".skillName");
 const skillValue = document.querySelector(".skillValue");
@@ -78,6 +141,13 @@ const skillValue = document.querySelector(".skillValue");
 function addSkill() {
   let nameSkill = skillName.value;
   let cost = skillValue.value;
+
+  if (nameSkill == "" || nameSkill == " ") {
+    return;
+  }
+  if (cost == "" || cost == " ") {
+    cost = 0;
+  }
   let newskill = {
     name: nameSkill,
     value: cost,
@@ -90,13 +160,20 @@ function addSkill() {
   skillName.value = "";
   skillValue.value = "";
 }
-//add desvantages
+/// add desvantages /// bad skills
 const badSkillName = document.querySelector(".badskillName");
 const badSkillValue = document.querySelector(".badskillValue");
 
 function addSkillNegative() {
   nameSkill = badSkillName.value;
   cost = badSkillValue.value;
+  if (nameSkill == "" || nameSkill == " ") {
+    return;
+  }
+  if (cost == "" || cost == " ") {
+    cost = 0;
+  }
+
   let newskill = {
     name: nameSkill,
     value: cost,
@@ -104,18 +181,17 @@ function addSkillNegative() {
   };
   skills.push(newskill);
   updateSkills();
-  console.log(badSkillsTotal);
   negativePointsLimit(badSkillsTotal);
 
   badSkillName.value = "";
-  badSkillValue.value = 0;
+  badSkillValue.value = "";
 }
 
-//limite de desvantagens
+/// limite de desvantagens /// bad skills limit ///
+
 function negativePointsLimit(badTotal) {
   let maxNegative;
-  maxPoints = document.querySelector("#maxCharPoints").value;
-  switch (parseInt(maxPoints)) {
+  switch (parseInt(maxPoints.value)) {
     case 5:
       maxNegative = -3;
       break;
@@ -139,7 +215,9 @@ function negativePointsLimit(badTotal) {
     pointsDiv.innerHTML = `<p class="off-Limits">Excedeu o número de desvantagens permitidas!</p>`;
   } else return;
 }
+/// update html skills /// save let to JSON file ///
 
+let skillsToJSON;
 function updateSkills(skillsLoaded) {
   let content = "";
   let content2 = "";
@@ -151,14 +229,14 @@ function updateSkills(skillsLoaded) {
   for (let i = 0; i < skills.length; i++) {
     if (!skills[i].bad) {
       content += `<p class="underLine" id="${i}">${skills[i].name} (${skills[i].value})</p> 
-      <button class="hide" onclick="deleteSkills(${i})">x</button>`;
+      <button class="hide plus-button" onclick="deleteSkills(${i})"><i class="bi bi-trash"></i></button>`;
     } else {
       content2 += `<p class="underLine" id="${i}">${skills[i].name} (${skills[i].value})</p> 
-      <button class="hide" onclick="deleteSkills(${i})">x</button>`;
+      <button class="hide plus-button" onclick="deleteSkills(${i})"><i class="bi bi-trash"></i></button>`;
       badSkillsTotal += parseInt(skills[i].value);
     }
   }
-  let skillSave = localStorage.setItem("skills", JSON.stringify(skills));
+  skillsToJSON = skills;
   container.innerHTML = content;
   container2.innerHTML = content2;
   totalPoints();
@@ -168,36 +246,32 @@ function deleteSkills(index) {
   skills.splice(index, 1);
   updateSkills();
 }
-///Vantagem unica  Unique Skill  \\\\\\\\\\\\\\\\\
+/// Vantagem unica /// Unique Skill  ///
 
 const uniqueSkillName = document.querySelector(".uniqueName");
 const uniqueSkillInput = document.querySelector(".uniqueSkillValue");
 const uniqueSkilldiv = document.querySelector(".uniqueSkillContainer");
 const uniqueTotalMod = document.querySelector(".uniqueSkillPoints");
-
+let uniqueSkillToJSon;
 function uniqueSkillValue() {
   return uniqueTotalMod.value;
 }
 
+let uniqueObject = {
+  name: "",
+  cost: "",
+};
 function uniqueSkill(uniqueSkillLoaded) {
-  let uniqueObject = {
-    name: "",
-    cost: "",
-  };
-
   uniqueObject.name = uniqueSkillName.value;
   uniqueObject.cost = uniqueSkillInput.value;
   if (uniqueSkillLoaded) {
     uniqueObject.name = uniqueSkillLoaded.name;
     uniqueObject.cost = uniqueSkillLoaded.cost;
   }
-  if (uniqueObject.name == "") {
-    uniqueObject.name = "Humano";
+  if (uniqueObject.name == "" || uniqueObject.name == " ") {
+    return;
   }
-  let saveUniqueSkill = localStorage.setItem(
-    "uniqueSkill",
-    JSON.stringify(uniqueObject)
-  );
+  uniqueSkillToJSon = uniqueObject;
   uniqueSkilldiv.innerHTML = `<p class="underLine">${uniqueObject.name} (${uniqueObject.cost})</p>`;
 
   uniqueSkillName.value = "";
@@ -208,61 +282,25 @@ function uniqueSkill(uniqueSkillLoaded) {
 
 function totalPoints() {
   let total = 0;
-  maxPoints = document.querySelector("#maxCharPoints").value;
+
   for (let i = 0; i < skills.length; i++) {
     total += parseInt(skills[i].value);
   }
   let uniqueSkill = uniqueSkillInput.value;
   total += parseInt(atributesTotalPoints());
   total += parseInt(uniqueSkill);
-
+  total += parseInt(counter);
   total -= parseInt(uniqueSkillValue());
 
-  if (total > maxPoints) {
+  if (total > maxPoints.value) {
     pointsDiv.innerHTML = `<p class="off-Limits">Pontos excedentes = ${
-      (maxPoints - total) * -1
+      (maxPoints.value - total) * -1
     }</p>`;
   } else pointsDiv.innerHTML = `<p>Pontos gastos = ${total}</p>`;
 
-  if (total === parseInt(maxPoints)) {
+  if (total === parseInt(maxPoints.value)) {
     pointsDiv.innerHTML = `<p>Todos pontos já distribuidos!</p>`;
   }
-}
-let atrSave;
-const str = document.querySelector("#strenghtAtri");
-const abi = document.querySelector("#abilityAtri");
-const res = document.querySelector("#resistanceAtri");
-const arm = document.querySelector("#armorAtri");
-const pwr = document.querySelector("#rangedAtri");
-
-function atributesLoad() {
-  let atributes = JSON.parse(localStorage.getItem("atributes"));
-
-  str.value = atributes[0];
-  abi.value = atributes[1];
-  res.value = atributes[2];
-  arm.value = atributes[3];
-  pwr.value = atributes[4];
-}
-function atributesTotalPoints() {
-  let strAtr = str.value;
-  let abiAtr = abi.value;
-  let resAtr = res.value;
-  let armAtr = arm.value;
-  let pwrAtr = pwr.value;
-  let allAtr = [strAtr, abiAtr, resAtr, armAtr, pwrAtr];
-  let allAtrJson = JSON.stringify(allAtr);
-  atrSave = localStorage.setItem("atributes", allAtrJson);
-  console.log(JSON.parse(allAtrJson));
-
-  let total =
-    parseInt(strAtr) +
-    parseInt(abiAtr) +
-    parseInt(resAtr) +
-    parseInt(armAtr) +
-    parseInt(pwrAtr);
-
-  return total;
 }
 
 /// container das magias
@@ -275,7 +313,7 @@ let magicContent = " ";
 let initialMagicsContent = "";
 let initialMagics = [];
 
-// magias iniciais // default
+/// magias iniciais /// default magics ///
 fetch("json/magics.json")
   .then((response) => response.json())
   .then((data) => {
@@ -299,7 +337,15 @@ function defaultMagics() {
   }
 }
 
+/// adicionar magias  /// add magics ///
+
 function addMagic() {
+  if (magicName.value == "" || magicName.value == " ") {
+    return;
+  }
+  if (magicCost.value == " " || magicCost.value == "") {
+    magicCost.value = 0;
+  }
   magicContent = " ";
   magicNameString = magicName.value;
   magicCostValue = magicCost.value;
@@ -313,24 +359,25 @@ function addMagic() {
   magicCost.value = 0;
 }
 
+/// update magics html and save JSON file ///
+
+let magicsToJSON;
+
 function updateMagics(magicsLoad) {
   magicContent = "";
   if (magicsLoad) {
-    let load = JSON.parse(magicsLoad);
-    if (magicsLoad || load.length > 0) {
-      magics = load;
+    if (magicsLoad.length > 0) {
+      magics = magicsLoad;
     }
   }
-
   if (magics.length > 0) {
     for (let i = 0; i < magics.length; i++) {
-      magicContent += `<p class="underLine">${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button class="hide" onclick="deleteMagic(${i})">-</button>`;
+      magicContent += `<p class="underLine">${magics[i].name}  / Custo ${magics[i].cost} Pm(s)</p> <button class="hide plus-button" onclick="deleteMagic(${i})"><i class="bi bi-trash"></i></button>`;
     }
   } else {
     magicContent = " ";
   }
-
-  let magicsSave = localStorage.setItem("magics", JSON.stringify(magics));
+  magicsToJSON = magics;
   magicContent += initialMagicsContent;
   magicContainer.innerHTML = magicContent;
 }
@@ -340,14 +387,19 @@ function deleteMagic(index) {
   updateMagics(null);
 }
 
-// itens
+/// add itens /// adicionar items ///
+
 let items = [];
 let itemsContent = " ";
+let itemsToJSON;
 const itemName = document.querySelector("#itemName");
 const itemAmount = document.querySelector("#itemAmount");
 const itemsDiv = document.querySelector("#itemsContainer");
 
 function addItem() {
+  if (itemName.value == "" || itemName.value == " ") {
+    return;
+  }
   let newItem = {
     name: itemName.value,
     amount: itemAmount.value,
@@ -355,7 +407,6 @@ function addItem() {
   items.push(newItem);
   itemName.value = "";
   itemAmount.value = "";
-  localStorage.setItem("items", JSON.stringify(items));
   updateItems(items);
 }
 function updateItems(load) {
@@ -364,82 +415,128 @@ function updateItems(load) {
   }
   itemsContent = " ";
   for (let i = 0; i < items.length; i++) {
-    itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})">-</button></div>`;
+    itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})" class="plus-button"><i class="bi bi-trash"></i></button></div>`;
   }
   itemsDiv.innerHTML = itemsContent;
+  itemsToJSON = items;
 }
 
 function deleteItem(index) {
   items.splice(index, 1);
   updateItems();
 }
-//add kit
+/// add adventurer kit  ///  adicionar  kit de aventureiro  ///
+
 const kitDiv = document.querySelector(".kitContainer");
 const kitName = document.querySelector(".kitName");
+const kitPoints = document.querySelector(".kitPointsdiv");
 let kitContent = " ";
 let kitSave;
+let kitList = [];
+let kitTotalCost = 0;
 
 function addKit() {
   kitN = kitName.value;
-  kitContent = `<div class="row underLine"><p>${kitN} <p><button  class="hide" onclick="deleteKit()">-</button></div>`;
+  if (kitN == "" || kitN == " ") {
+    return;
+  }
+  kitList.push(kitN);
   updateKit(null);
-  kitName.value = " ";
+  kitName.value = "";
 }
+let kitToJSON;
 
 function updateKit(kit) {
   if (kit) {
-    kitDiv.innerHTML = `<div class="row underLine"><p>${kit} <p><button  class="hide" onclick="deleteKit()">-</button></div>`;
+    kitContent = "";
+    for (let i = 0; i < kit.length; i++) {
+      kitContent += `<div class="row underLine"><p>${kit[i]} <p><button  class="hide plus-button" onclick="deleteKit(${i})"><i class="bi bi-trash"></i></button></div>`;
+      kitDiv.innerHTML = kitContent;
+    }
+    kitToJSON = kit;
+    kitCount(kit.length);
     return;
   }
+  kitContent = "";
+  for (let i = 0; i < kitList.length; i++) {
+    kitContent += `<div class="row underLine"><p>${kitList[i]} <p><button class="hide plus-button" onclick="deleteKit(${i})"><i class="bi bi-trash"></i></button></div>`;
+  }
   kitDiv.innerHTML = kitContent;
-  kitSave = localStorage.setItem("kit", kitName.value);
+  kitToJSON = kitList;
+  kitCount(kitList.length);
 }
-function deleteKit() {
-  kitDiv.innerHTML = "";
-  kitSave = localStorage.removeItem("kit");
+function deleteKit(index) {
+  kitList.splice(index, 1);
+  updateKit(null);
 }
-//damage type /// damage type///
+let counter = 0;
+
+function kitCount(lenghtCount) {
+  if (lenghtCount <= 1) {
+    kitPoints.classList.add("infoTemp");
+    counter = 0;
+    totalPoints();
+  } else {
+    counter = 0;
+    kitPoints.classList.remove("infoTemp");
+    console.log(counter);
+    for (let i = 1; i < lenghtCount; i++) {
+      counter += i;
+
+      kitPoints.innerHTML = `<p>
+          Pontos gastos com kits extras = ${counter} </p>`;
+    }
+    totalPoints();
+  }
+}
+/// save damage type /// salvar tipos de danos ///
 const damageSelect = document.querySelector(".strType");
 const damageRangedSelect = document.querySelector(".pdfType");
+let damageType1;
+let damageType2;
+let damageTypeJSON;
+
 function saveTypeDamage() {
-  let damageValue = damageSelect.value;
-  localStorage.setItem("damageType1", damageValue);
+  damageType1 = damageSelect.value;
+  damageType2 = damageRangedSelect.value;
+  damageTypeJSON = { type1: damageType1, type2: damageType2 };
+}
+function loadTypeDamage(load) {
+  damageSelect.value = load.type1;
+  damageRangedSelect.value = load.type2;
 }
 
-function saveTypeDamage2() {
-  let damageRangedValue = damageRangedSelect.value;
-  localStorage.setItem("damageType2", damageRangedValue);
-}
+/// save lore save background /// salvar historia do personagem ///
 
-function loadTypeDamage() {
-  damageSelect.value = localStorage.getItem("damageType1");
-  damageRangedSelect.value = localStorage.getItem("damageType2");
-}
-//Add loreBG
 const textAreaInput = document.querySelector(".loreBg");
+let loreToJSON;
 
 function saveLore() {
-  const saveLore = localStorage.setItem("loreLoad", textAreaInput.value);
-  console.log(textAreaInput.value);
+  loreToJSON = textAreaInput.value;
 }
 
-function loadLore() {
-  const loadContent = localStorage.getItem("loreLoad");
+function loadLore(loadContent) {
   textAreaInput.value = loadContent;
+  loreToJSON = loadContent;
 }
 
 //mana health
 const liveHP = document.querySelector("#lifeP");
 const liveMP = document.querySelector("#magicP");
 
+let HpToJSON;
+let MpToJSON;
+
 function saveMPHP() {
-  let hpSave = localStorage.setItem("hp", liveHP.value);
-  let mpSave = localStorage.setItem("mp", liveMP.value);
+  HpToJSON = liveHP.value;
+  MpToJSON = liveMP.value;
 }
 
-function loadMPHP() {
-  liveHP.value = localStorage.getItem("hp");
-  liveMP.value = localStorage.getItem("mp");
+function loadMPHP(loadHP, loadMP) {
+  liveHP.value = loadHP;
+  liveMP.value = loadMP;
+  HpToJSON = liveHP.value;
+  MpToJSON = liveMP.value;
 }
 
 liveHP.addEventListener("input", function () {
@@ -448,54 +545,106 @@ liveHP.addEventListener("input", function () {
 liveMP.addEventListener("input", function () {
   saveMPHP();
 });
-//localStorage
 
-const charNameLoad = localStorage.getItem("charName");
-const kitLoad = localStorage.getItem("kit");
-const magicsLoad = localStorage.getItem("magics");
-const skillsLoad = localStorage.getItem("skills");
-const uniqueSkillLoad = localStorage.getItem("uniqueSkill");
-const loreLoad = localStorage.getItem("loreLoad");
-const itemLoad = localStorage.getItem("items");
-let skillParse;
-let uniqueSkillParse;
-let itemsParse;
-function parseSave() {
-  skillParse = JSON.parse(skillsLoad);
-  uniqueSkillParse = JSON.parse(uniqueSkillLoad);
-  itemsParse = JSON.parse(itemLoad);
+/// save experience points /// salvar o precioso xp ///
+const exp = document.querySelector("#exp");
+let expJSON;
+
+function saveExp() {
+  expJSON = exp.value;
 }
 
-function loadStorage() {
-  parseSave();
-  setName(charNameLoad);
-  updateKit(kitLoad);
-  atributesLoad();
+function loadExp(load) {
+  exp.value = load;
+}
+
+//new save system slot
+
+let slot1;
+
+function saveJSON() {
+  alert("Salvou sua ficha parabéns!");
+  saveAll();
+  slot1 = [
+    nameSaveToJSON,
+    atributesToJSON,
+    skillsToJSON,
+    magicsToJSON,
+    HpToJSON,
+    MpToJSON,
+    uniqueSkillToJSon,
+    kitToJSON,
+    itemsToJSON,
+    loreToJSON,
+    maxPointsJSON,
+    damageTypeJSON,
+    expJSON,
+  ];
+  localStorage.setItem("slot1", JSON.stringify(slot1));
+}
+
+function saveAll() {
+  saveLore();
+  saveMaxpointsToJSON();
+  saveTypeDamage();
+  saveExp();
+  saveAtributes();
+  saveMPHP();
+  saveName();
+}
+let loadSlot;
+function loadJSON() {
+  if (lock) {
+    return;
+  }
+  loadSlot = JSON.parse(localStorage.getItem("slot1"));
+  console.log(loadSlot);
+
+  loadName();
+  atributesLoad(loadSlot[1]);
+  updateSkills(loadSlot[2]);
+  updateMagics(loadSlot[3]);
+  loadMPHP(loadSlot[4], loadSlot[5]);
+  uniqueSkill(loadSlot[6]);
+  updateKit(loadSlot[7]);
+  updateItems(loadSlot[8]);
+  loadLore(loadSlot[9]);
+  maxPointsLoad(loadSlot[10]);
+  loadTypeDamage(loadSlot[11]);
+  loadExp(loadSlot[12]);
   ResistancePointSetter();
-  updateMagics(magicsLoad);
-  updateSkills(skillParse);
-  uniqueSkill(uniqueSkillParse);
-  loadLore();
-  updateItems(itemsParse);
-  loadTypeDamage();
-  loadMPHP();
 }
-//clear storage
+
+/// load maxpoints select /// carrega o seletor de pontos maximos ///
+let maxPointsJSON;
+function saveMaxpointsToJSON() {
+  maxPointsJSON = parseInt(maxPoints.value);
+  console.log(maxPointsJSON);
+}
+
+function maxPointsLoad(load) {
+  maxPoints.value = load;
+  totalPoints();
+}
+
+/// clear storage
 function clearStorage() {
+  clearArrays();
   localStorage.clear();
+  location.reload();
+  atributesToZero();
+  ResistancePointSetter();
+}
+function clearArrays() {
+  magics.length = 0;
+  skills.length = 0;
+  items.length = 0;
+  kitList.length = 0;
+  damageRangedSelect.value = "";
+  damageSelect.value = "";
 }
 
 // eventos
-//damage type change
-damageSelect.addEventListener("change", function () {
-  saveTypeDamage();
-  console.log(damageSelect.value);
-});
-damageRangedSelect.addEventListener("change", function () {
-  saveTypeDamage2();
-  console.log(damageRangedSelect.value);
-});
-
 // faz o calculo quando cade input tem valor alterado
 const inputsNumber = document.querySelectorAll(".atr");
 
@@ -507,8 +656,19 @@ for (let i = 0; i < inputsNumber.length; i++) {
 
 //evento para calcular pontos assim q seleciona o select
 
-const maxPointsEvent = document.querySelector("#maxCharPoints");
-
-maxPointsEvent.addEventListener("input", function () {
+maxPoints.addEventListener("input", function () {
   totalPoints();
+});
+
+const lockButton = document.querySelector("#lockButton");
+const lockImg = document.querySelector("#lockImg");
+
+lockButton.addEventListener("click", function () {
+  if (lockImg.classList.contains("bi-lock")) {
+    lockImg.classList.remove("bi-lock");
+    lockImg.classList.add("bi-lock-fill");
+  } else {
+    lockImg.classList.remove("bi-lock-fill");
+    lockImg.classList.add("bi-lock");
+  }
 });

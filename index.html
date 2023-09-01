@@ -1,27 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt_br">
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ficha de personagem</title>
     <link rel="stylesheet" href="style.css" />   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
   <script src="scripts/script.js" defer></script>        
-      </head>
+  </head>
   <body>
-    <div>
+    <div class="title">
       <h1>Ficha de Personagem</h1>
       <div class="nameDiv"></div>
     </div>
     <div class="row utility">
-    <button onclick="lockUnlockHidden()">Lock</button>
-    <button onclick="loadStorage()">Load</button>
-    <button onclick="clearStorage()">Clear</button>
+    <button id="lockButton" onclick="lockUnlockHidden()"><i id="lockImg" class="bi bi-lock"></i>Lock</button>
+    <button class="hide" onclick="loadJSON()()"><i class="bi bi-arrow-counterclockwise"></i>Load</button>
+    <button class="hide" onclick="clearStorage()"><i class="bi bi-eraser-fill"></i>Clear</button>
+    <button class="hide" onclick="saveJSON()"><i class="bi bi-check-circle-fill"></i>Save</button>
+    
+    
   </div>
   <div class="margin-left row hide">
-      <p>Nome:</p>
-      <input class="mainName inputText" type="text">
-      <button onclick="setName(null)">+</button>
+      <p id="sheetName">Nome:</p>
+      <input placeholder="Euclides, Terezinha, Kratos ..." class="mainName inputText" type="text" autocomplete="off">
+      <button onclick="setName(null)" class="plus-button"><i class="bi bi-plus-circle"></i></button>
   </div>
     <!--*Primeira coluna-->
     <div class="row">
@@ -43,11 +47,11 @@
           
         </div>
         <div class="col atribute">
-          <Input value="0" min="0" class="lock atr" id="strenghtAtri" type="number"></Input>
-          <Input value="0" min="0" class="lock atr" id="abilityAtri" type="number"></Input>
-          <Input value="0" min="0" class="lock atr" id="resistanceAtri" type="number"></Input>
-          <Input value="0" min="0" class="lock atr" id="armorAtri" type="number"></Input>
-          <Input value="0" min="0" class="lock atr" id="rangedAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="strenghtAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="abilityAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="resistanceAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="armorAtri" type="number"></Input>
+          <Input value="0" min="0" max="5" class="lock atr" id="rangedAtri" type="number"></Input>
         </div>
         </div>
 
@@ -58,28 +62,39 @@
           </div>
           <div class="col align-box">
             <div class="row">
-              <input class="inputNumber" type="number" id="lifeP" />
+              <input value="0" class="inputNumber" type="number" id="lifeP" />
             </div>
             <div class="row">
-              <input class="inputNumber" type="number" id="magicP" />
+              <input value="0" class="inputNumber" type="number" id="magicP" />
             </div>
           </div>  
           <div class="col">
             
-            <input class="maxBar inputNumber" id="maxLife" disabled />
-            <input class="maxBar inputNumber" id="maxMagic" disabled />
+            <input value="0" class="maxBar inputNumber" id="maxLife"  />
+            <input value="0" class="maxBar inputNumber" id="maxMagic"  />
             </div>
 
-    </div>
+        </div>
+
+        <div class="row-start margin-left margin-top col1">
+          <div class="col">
+            <p class="forceLine max-width">Pontos de Experiência:</p>                     
+          </div>
+         
+          <div class="col">            
+            <input value="0" type="number" class="maxBar inputNumber" id="exp"  />           
+            </div>
+
+        </div>
 
     <div class="col margin-left">
       <div class="row">
         <h2>Vantagem única</h2>
       </div>
       <div class="row hide">
-        <input type="text" placeholder="Humano" class="uniqueName inputText"/>
-        <input type="number" value="0" class="uniqueSkillValue inputNumber atr"/>
-        <button onclick="uniqueSkill(null)">+</button>
+        <input type="text" placeholder="Humano, anão, alien ..." class="uniqueName inputText"/>
+        <input type="number" value="0" class="uniqueSkillValue inputNumber"/>
+        <button onclick="uniqueSkill(null)" class="plus-button"><i class="bi bi-plus-circle"></i></button>
       </div>
       <div class="row hide">
         <p>Pontos de Atributos da Vantagem</p>
@@ -97,21 +112,24 @@
      <div class="row hide">
        <input  class="kitName inputText" type="text" placeholder="Guerreiro, adepto, mago...">
       
-       <button onclick="addKit()">+</button>
+       <button onclick="addKit()" class="plus-button"><i class="bi bi-plus-circle"></i></button>
      </div>
      <div class="kitContainer">
 
      </div>
+     <div class="hide kitPointsdiv infoTemp">
+       <p>Pontos gastos com kits extras = 0 </p>
 
+     </div>
     </div>
 
     <div class="row margin-top margin-left">
       <div class="col">
         <h2>Vantagens</h2>
         <div class="row hide">
-          <input class="skillName inputText" type="text" placeholder="Nova habilidade">
+          <input class="skillName inputText" maxlength="25" type="text" placeholder="Nova habilidade">
           <input class="skillValue inputNumber" min="0" type="number" placeholder="Custo">
-          <button onclick="addSkill()">+</button>
+          <button onclick="addSkill()" class="plus-button"><i class="bi bi-plus-circle"></i></button>
         </div>
         <div class="skillContainer">
           <!--espaço para novas vantagens-->
@@ -123,10 +141,10 @@
 
       <div class="margin-left">
         <h2>Desvantagens</h2>
-        <div class="row hide">
-          <input class="badskillName inputText" type="text" placeholder="Nova fraqueza" >
+        <div class="row hide ">
+          <input class="badskillName inputText" maxlength="25" type="text" placeholder="Nova fraqueza" >
           <input class="badskillValue inputNumber" max="0" type="number" placeholder="Custo"/>
-          <button  onclick="addSkillNegative()">+</button>
+          <button  onclick="addSkillNegative()" class="plus-button"><i class="bi bi-plus-circle"></i></button>
 
         </div>
           <div class="badskillContainer">
@@ -192,8 +210,8 @@
           
           <div class="row hide">
             <input placeholder="Nova magia" class="magicName inputText" type="text" >
-            <input class="magicCost inputNumber" min="0" type="number" >
-            <button  onclick="addMagic()">+</button>
+            <input value="0" class="magicCost inputNumber" min="0" type="number" >
+            <button  onclick="addMagic()" class="plus-button"><i class="bi bi-plus-circle"></i></button>
           </div>      
           <div class="row defaultMagics">
             <button onclick="defaultMagics()">Mostrar magias iniciais</button>
@@ -201,30 +219,27 @@
         <div class="magicContainer">  
         </div>        
       </div>  
-
         <div class="col margin-left">
           <h2>Inventário</h2>
         <div class="row">
           <input class="inputText" placeholder="Novo item" type="text" id="itemName">
-          <input type="number" id="itemAmount" class="inputNumber">
-          <button onclick="addItem(null)">+</button>
+          <input value="0" type="number" id="itemAmount" class="inputNumber">
+          <button onclick="addItem(null)" class="plus-button"><i class="bi bi-plus-circle"></i></button>
         </div>    
         <div  class="inv" id="itemsContainer">
-
         </div>
-
         <div>
           <h2>História</h2>
-          <textarea placeholder="Era uma vez..." class="lock loreBg" name="lore" id="lore" cols="30" rows="10"></textarea>
-           <button class="hide saveButton" onclick="saveLore()">Save lore</button>
-        </div>
-     
-    <!--*^^ fim da segunda coluna ^^-->   
-      
+          <textarea placeholder="Era uma vez..." class="lock loreBg" name="lore" id="lore" cols="30" rows="10"></textarea>          
+        </div>     
+    <!--*^^ fim da segunda coluna ^^-->         
   </div>
        </div>
       </div>
       <div class="hide totalPoints">
         <p>Pontos gastos = 0</p></div>
+
+        <h6>v.02 @dev_telmo</h6>
+
   </body>
 </html>
