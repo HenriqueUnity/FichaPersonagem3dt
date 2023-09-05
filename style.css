@@ -118,10 +118,11 @@ textarea {
   padding: 5px;
   font-family: "Tilt Prism", cursive;
   font-family: "Dancing Script", cursive;
-  font-size: 20px;
+  font-size: 25px;
   color: #ffb319;
   background-color: #615c5c;
   border-radius: 10px;
+  margin-left: 1vw;
 }
 .totalPoints {
   display: flex;
@@ -146,8 +147,16 @@ textarea {
   justify-content: center;
   gap: 5px;
 }
+.utility button {
+  border-radius: 5px;
+  padding: 2px;
+}
 .hidden,
 .infoTemp {
+  visibility: hidden;
+  position: absolute;
+}
+.alwayshidden {
   visibility: hidden;
   position: absolute;
 }
@@ -194,4 +203,26 @@ p {
   border: none;
   background: none;
   margin-left: 1vw;
+}
+.slots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1vh;
+}
+.slots button {
+  border-radius: 5px;
+  padding: 5px;
+}
+.done {
+  display: flex;
+  justify-content: center;
+  margin-top: 2vh;
+}
+.done label {
+  font-size: 25px;
+}
+.done input {
+  border-radius: 20px;
+  width: 2vw;
 }

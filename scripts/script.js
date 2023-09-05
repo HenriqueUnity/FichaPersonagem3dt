@@ -1,6 +1,7 @@
 /// lock atributes  unlock atributes ///
 const atributes = document.getElementsByClassName("lock");
 let lock = false;
+
 function lockUnlockHidden() {
   let hide = document.querySelectorAll(".hide");
   if (!lock) {
@@ -28,24 +29,33 @@ const divname = document.querySelector(".nameDiv");
 let nameSaveToJSON;
 
 function setName(name) {
+  console.log(name);
   if (name != null) {
     divname.innerHTML = `<h2>${name}</h2> `;
     nameSaveToJSON = name;
+    mainName.value = "";
     return;
   }
-
   if (mainName.value == "" || mainName.value == " ") {
     return;
   }
 
   divname.innerHTML = `<h2>${mainName.value}</h2> `;
+  nameSaveToJSON = mainName.value;
+  mainName.value = "";
 }
 
 function saveName() {
-  nameSaveToJSON = mainName.value;
+  if (!nameSaveToJSON) {
+    nameSaveToJSON = mainName.value;
+    return;
+  } else {
+    return;
+  }
 }
 function loadName() {
   charName = loadSlot[0];
+  console.log(`load ${charName}`);
   setName(charName);
   nameSaveToJSON = charName;
 }
@@ -560,12 +570,22 @@ function loadExp(load) {
 
 //new save system slot
 
-let slot1;
-
+const slot = document.querySelectorAll(".slot");
+let slotActive;
+function setSlot(value) {
+  slotActive = value;
+  console.log(value);
+  if (lock) {
+    lockUnlockHidden();
+    loadJSON();
+    lockUnlockHidden();
+  }
+  loadJSON();
+}
 function saveJSON() {
   alert("Salvou sua ficha parabéns!");
   saveAll();
-  slot1 = [
+  let newSave = [
     nameSaveToJSON,
     atributesToJSON,
     skillsToJSON,
@@ -579,8 +599,10 @@ function saveJSON() {
     maxPointsJSON,
     damageTypeJSON,
     expJSON,
+    doneStatusJSON,
   ];
-  localStorage.setItem("slot1", JSON.stringify(slot1));
+  localStorage.setItem(`slot${slotActive}`, JSON.stringify(newSave));
+  console.log(`save slot${slotActive}`);
 }
 
 function saveAll() {
@@ -591,15 +613,26 @@ function saveAll() {
   saveAtributes();
   saveMPHP();
   saveName();
+  saveDoneStatus();
 }
+
 let loadSlot;
+function acessJSON() {
+  loadSlot = JSON.parse(localStorage.getItem(`slot${slotActive}`));
+  if (loadSlot) {
+    return loadSlot;
+  }
+}
 function loadJSON() {
   if (lock) {
     return;
   }
-  loadSlot = JSON.parse(localStorage.getItem("slot1"));
-  console.log(loadSlot);
 
+  loadSlot = JSON.parse(localStorage.getItem(`slot${slotActive}`));
+  if (!loadSlot) {
+    return;
+  }
+  console.log(`load slot${slotActive}`);
   loadName();
   atributesLoad(loadSlot[1]);
   updateSkills(loadSlot[2]);
@@ -613,6 +646,7 @@ function loadJSON() {
   loadTypeDamage(loadSlot[11]);
   loadExp(loadSlot[12]);
   ResistancePointSetter();
+  loadDoneStatus(loadSlot[13]);
 }
 
 /// load maxpoints select /// carrega o seletor de pontos maximos ///
@@ -643,6 +677,36 @@ function clearArrays() {
   damageRangedSelect.value = "";
   damageSelect.value = "";
 }
+///done sheet /// ficha pronta
+
+let doneStatusJSON;
+const inputCheckbox = document.querySelector("#done");
+const pointsTotaldiv = document.querySelector(".totalPoints");
+function saveDoneStatus() {
+  if (inputCheckbox.checked) {
+    doneStatusJSON = true;
+  } else {
+    doneStatusJSON = false;
+  }
+}
+function loadDoneStatus(done) {
+  if (done) {
+    inputCheckbox.checked = true;
+  } else {
+    inputCheckbox.checked = false;
+  }
+  checkboxCheck();
+}
+function checkboxCheck() {
+  if (inputCheckbox.checked) {
+    pointsTotaldiv.classList.add("alwayshidden");
+  } else {
+    pointsTotaldiv.classList.remove("alwayshidden");
+  }
+}
+inputCheckbox.addEventListener("input", function () {
+  checkboxCheck();
+});
 
 // eventos
 // faz o calculo quando cade input tem valor alterado
