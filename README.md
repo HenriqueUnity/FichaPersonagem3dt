@@ -14,7 +14,7 @@ Ficha de personagem para o sistema de rpg 3d&t Alpha
 Com recursos de criação de personagem como, indicar pontos gastos e indicar quando houve uso incorreto de algumas regras básicas de criação de personagem !
 
 
-javascript puro, estouo usando icones do boostrap icons 
+javascript puro, estou usando icones do boostrap icons 
 
 sua ficha fica salva no amazenamento local, o botão "save" cria um arquivo JSON com as infos de sua ficha. 
 
