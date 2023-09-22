@@ -29,7 +29,6 @@ const divname = document.querySelector(".nameDiv");
 let nameSaveToJSON;
 
 function setName(name) {
-  console.log(name);
   if (name != null) {
     divname.innerHTML = `<h2>${name}</h2> `;
     nameSaveToJSON = name;
@@ -134,6 +133,63 @@ function SetMaxLifeMagic(res) {
     magic.value = res * defaultMultiplier;
   }
 }
+/// powers /// poderes do kit ///
+
+let powers = [];
+let containerPower = document.querySelector(".powerContainer");
+
+const powerName = document.querySelector(".powerName");
+const powerValue = document.querySelector(".powerValue");
+
+function addPower() {
+  let namePower = powerName.value;
+  let cost = powerValue.value;
+
+  if (namePower == "" || namePower == " ") {
+    return;
+  }
+  if (cost == "" || cost == " ") {
+    cost = 0;
+  }
+  if (cost > 1) {
+    cost = 1;
+  }
+  let newPower = {
+    name: namePower,
+    value: cost,
+  };
+
+  powers.push(newPower);
+  updatePowers();
+
+  powerName.value = "";
+  powerValue.value = "";
+}
+
+/// update html skills /// save let to JSON file ///
+
+let powersToJson;
+function updatePowers(powerLoaded) {
+  let content = "";
+
+  if (powerLoaded && powerLoaded.length > 0) {
+    powers = powerLoaded;
+  }
+  for (let i = 0; i < powers.length; i++) {
+    content += `<p class="underLine" id="${i}">${powers[i].name} (${powers[i].value})</p> 
+      <button class="hide plus-button" onclick="deletePower(${i})"><i class="bi bi-trash"></i></button>`;
+  }
+  powersToJson = powers;
+  containerPower.innerHTML = content;
+
+  totalPoints();
+}
+
+function deletePower(index) {
+  powers.splice(index, 1);
+  updatePowers();
+}
+
 ///skills   /// vantagens /// skills
 
 let skills = [];
@@ -283,6 +339,7 @@ function uniqueSkill(uniqueSkillLoaded) {
   }
   uniqueSkillToJSon = uniqueObject;
   uniqueSkilldiv.innerHTML = `<p class="underLine">${uniqueObject.name} (${uniqueObject.cost})</p>`;
+  totalPoints();
 
   uniqueSkillName.value = "";
   uniqueSkillInput.value = 0;
@@ -296,9 +353,14 @@ function totalPoints() {
   for (let i = 0; i < skills.length; i++) {
     total += parseInt(skills[i].value);
   }
-  let uniqueSkill = uniqueSkillInput.value;
+  for (let i = 0; i < powers.length; i++) {
+    total += parseInt(powers[i].value);
+  }
+
   total += parseInt(atributesTotalPoints());
-  total += parseInt(uniqueSkill);
+  if (uniqueObject.cost) {
+    total += parseInt(uniqueObject.cost);
+  }
   total += parseInt(counter);
   total -= parseInt(uniqueSkillValue());
 
@@ -425,10 +487,16 @@ function updateItems(load) {
   }
   itemsContent = " ";
   for (let i = 0; i < items.length; i++) {
-    itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})" class="plus-button"><i class="bi bi-trash"></i></button></div>`;
+    itemsContent += `<div class="row underLine"><p>${items[i].name}</p> <input onchange="changeAmount(${i})" id="item${i}" class="inputNumber" type="number" min="0" value="${items[i].amount}"> <button onclick="deleteItem(${i})" class="plus-button"><i class="bi bi-trash"></i></button></div>`;
   }
+  console.log(items);
+  console.log(itemsContent);
   itemsDiv.innerHTML = itemsContent;
   itemsToJSON = items;
+}
+function changeAmount(index) {
+  let newAmount = document.querySelector(`#item${index}`);
+  items[index].amount = newAmount.value;
 }
 
 function deleteItem(index) {
@@ -600,6 +668,7 @@ function saveJSON() {
     damageTypeJSON,
     expJSON,
     doneStatusJSON,
+    powersToJson,
   ];
   localStorage.setItem(`slot${slotActive}`, JSON.stringify(newSave));
   console.log(`save slot${slotActive}`);
@@ -647,18 +716,20 @@ function loadJSON() {
   loadExp(loadSlot[12]);
   ResistancePointSetter();
   loadDoneStatus(loadSlot[13]);
+  updatePowers(loadSlot[14]);
 }
 
 /// load maxpoints select /// carrega o seletor de pontos maximos ///
 let maxPointsJSON;
 function saveMaxpointsToJSON() {
   maxPointsJSON = parseInt(maxPoints.value);
-  console.log(maxPointsJSON);
 }
-
 function maxPointsLoad(load) {
   maxPoints.value = load;
   totalPoints();
+}
+function savePowersToJson() {
+  powersToJson = powers;
 }
 
 /// clear storage

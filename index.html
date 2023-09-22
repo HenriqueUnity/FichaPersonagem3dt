@@ -32,10 +32,10 @@
     <div class="row utility">
     <button id="lockButton" onclick="lockUnlockHidden()"><i id="lockImg" class="bi bi-lock"></i>Lock</button>
     <button class="hide" onclick="loadJSON()"><i class="bi bi-arrow-counterclockwise i-colortheme1"></i>Load</button>
-    <button class="hide" onclick="clearStorage()"><i class="bi bi-eraser-fill i-colortheme1"></i>Clear</button>
+    <!-- <button  class="hide" onclick="clearStorage()"><i class="bi bi-eraser-fill i-colortheme1"></i>Clear</button> -->
     <button class="hide" onclick="saveJSON()"><i class="bi bi-check-circle-fill i-colortheme1"></i>Save</button>
     
-    
+   
   </div>
   <div class="margin-left row hide">
       <p id="sheetName">Nome:</p>
@@ -107,7 +107,7 @@
         <h2>Vantagem única</h2>
       </div>
       <div class="row hide">
-        <input type="text" placeholder="Humano, anão, alien ..." class="uniqueName inputText"/>
+        <input  type="text" placeholder="Humano, anão, alien ..." class="uniqueName inputText"/>
         <input type="number" value="0" class="uniqueSkillValue inputNumber"/>
         <button onclick="uniqueSkill(null)" class="plus-button"><i class="bi bi-plus-circle i-colortheme1"></i></button>
       </div>
@@ -123,21 +123,33 @@
       
     </div>
     <div class="col margin-left">
-     <h2>Kit de Aventureiro</h2>
-     <div class="row hide">
-       <input  class="kitName inputText" type="text" placeholder="Guerreiro, adepto, mago...">
-      
-       <button onclick="addKit()" class="plus-button"><i class="bi bi-plus-circle i-colortheme1"></i></button>
-     </div>
-     <div class="kitContainer">
-
-     </div>
-     <div class="hide kitPointsdiv infoTemp">
-       <p>Pontos gastos com kits extras = 0 </p>
-
-     </div>
+      <h2>Kit de Aventureiro</h2>
+      <div class="row hide">
+        <input  class="kitName inputText" type="text" placeholder="Guerreiro, adepto, mago...">
+        
+        <button onclick="addKit()" class="plus-button"><i class="bi bi-plus-circle i-colortheme1"></i></button>
+      </div>
+      <div class="kitContainer">
+        
+      </div>
+      <div class="hide kitPointsdiv infoTemp">
+        <p>Pontos gastos com kits extras = 0 </p>
+        
+      </div>
     </div>
-
+    
+    <div class="col margin-left">
+     <h2>Poderes</h2>
+     <div class="row hide">
+      <input  class="powerName inputText" type="text" placeholder="Poder novo...">
+      <input class="powerValue inputNumber" min="0" max="1" type="number" placeholder="0">
+      <button onclick="addPower()" class="plus-button"><i class="bi bi-plus-circle i-colortheme1"></i></button>
+    </div>
+    <div class="powerContainer">
+        
+    </div>
+    </div>
+    
     <div class="row margin-top margin-left">
       <div class="col">
         <h2>Vantagens</h2>
